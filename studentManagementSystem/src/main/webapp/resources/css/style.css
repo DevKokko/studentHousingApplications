@@ -1,0 +1,67 @@
+html, body{
+	margin:0px;
+	padding:0px; 
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	min-height:100%;
+}
+body{
+	background: linear-gradient(100deg, #2f7698, transparent);
+}
+
+table {   
+	border-collapse:collapse;
+	border-bottom:1px solid gray;
+	font-family: Tahoma,Verdana,Segoe,sans-serif;
+}
+ 
+th {
+	border-bottom:1px solid gray;
+	background:none repeat scroll 0 0 #2509c3;
+	padding:10px;
+	color: #FFFFFF;
+}
+
+tr {
+	border-top:1px solid gray;
+	text-align:center;	
+}
+ 
+tr:nth-child(even) {background: #FFFFFF}
+tr:nth-child(odd) {background: #BBBBBB}	
+ 
+#wrapper {width: 100%; margin-top: 0px; }
+#container {width: 100%; margin:auto}
+#container h3 {color: #000;}
+
+#header{
+	text-align:center;
+	margin-top:30px;
+}
+
+#container {
+	margin-top: 30px;
+}
+#content {
+	margin: 0 auto;
+	width: fit-content;
+}
+
+#loginbox{
+	margin: 0 auto;
+	margin-top: 50px;
+	max-width: 90%!important;
+	width: 500px;
+}
+
+.add-button {
+	border: 1px solid #666; 
+	border-radius: 5px; 
+	padding: 4px; 
+	font-size: 12px;
+	font-weight: bold;
+	width: 120px; 
+	padding: 5px 10px; 
+	
+	margin-bottom: 15px;
+	background: #cccccc;
+}
