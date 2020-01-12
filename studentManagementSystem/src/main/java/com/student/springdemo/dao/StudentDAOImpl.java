@@ -56,6 +56,30 @@ public class StudentDAOImpl implements StudentDAO {
 		//return the results
 		return students;
 	}
+	
+	@Override
+	public Student getStudentByUsername(String username) {
+		
+		//get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//create a query ... sort by last name
+		
+		Query<Student> theQuery = currentSession.createQuery("from Student WHERE username = :u" , 
+															Student.class);
+		
+		theQuery.setParameter("u", username);
+		
+		if(theQuery.getResultList().size() == 0) {
+			return null;
+		}
+		
+		//execute query and get result list
+		Student student = theQuery.getSingleResult();
+		
+		//return the results
+		return student;
+	}
 
 	@Override
 	public void saveStudent(Student theStudent) {

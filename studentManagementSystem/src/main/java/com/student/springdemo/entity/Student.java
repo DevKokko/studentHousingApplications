@@ -36,9 +36,15 @@ public class Student {
 	
 	@Column(name="semester")
 	private int semester;
+		
+	@Column(name="username")
+	private String username;
 	
-	@Column(name="score")
-	private int score;
+	@Column(name="password")
+	private String password;
+	
+	@Column(name="enabled")
+	private int enabled = 0;
 	
 	
 	
@@ -110,29 +116,55 @@ public class Student {
 
 	public void setSemester(int semester) {
 		this.semester = semester;
+	}	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
-
-	public int getScore() {
-		return score;
+	public int getEnabled() {
+		return enabled;
 	}
+	
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+	
+	
 
-	public void setScore(int score) {
-		this.score = score;
+	public Student(int id, String firstName, String lastName, String email, String phoneNumber, int department,
+			int registrationYear, int semester, String username, String password, int enabled) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.department = department;
+		this.registrationYear = registrationYear;
+		this.semester = semester;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
 	}
 
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", phoneNumber=" + phoneNumber + ", department=" + department + ", registrationYear="
-				+ registrationYear + ", semester=" + semester + ", score=" + score + "]";
+				+ registrationYear + ", semester=" + semester + "]";
 	}
-
-
-	
-
-
-	
 	
 
 }

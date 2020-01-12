@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +84,33 @@ public class StudentController {
 	public String saveStudent(@ModelAttribute("student") Student theStudent) {
 		
 		//save the student using our service
+		
+		final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		String encodedPassword = passwordEncoder.encode(theStudent.getPassword());
+
+        // prepend the encoding algorithm id
+        theStudent.setPassword("{bcrypt}" + encodedPassword);
+		
+		studentService.saveStudent(theStudent);
+		
+		return "redirect:/student/list";
+	}
+	
+	@PostMapping("/updateStudent")
+	public String updateStudent(@ModelAttribute("student") Student theStudent) {
+		
+		if(theStudent.getPassword().startsWith("{bcrypt}")) {
+			
+		}
+		else {
+			final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			String encodedPassword = passwordEncoder.encode(theStudent.getPassword());
+
+	        // prepend the encoding algorithm id
+	        theStudent.setPassword("{bcrypt}" + encodedPassword);
+		}
 		
 		studentService.saveStudent(theStudent);
 		

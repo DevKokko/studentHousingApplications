@@ -34,9 +34,11 @@
 <div id="container">
 <div id="content">
 	<h3>Save Student</h3>
+	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
+		String action = isUpdate=="0"?"saveStudent":"updateStudent";
+		%>
 
-
-	<form:form action="saveStudent" modelAttribute="student" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form action="<%= action %>" modelAttribute="student" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
 	<form:hidden path="id" />
@@ -78,6 +80,58 @@
 			</tr>
 			
 			<tr>
+				<td><label>Enabled </label></td>
+				<td>
+					<label class="switch">
+					  <input form="fakeForm" id="checkboxEnalbed" type="checkbox" name="enabled" onchange="EnabledChanged(this);">
+					  <span class="slider round"></span>
+					</label>
+					<form:input id="enabled" path="enabled" style="display:none;"/>
+				</td>
+			</tr>
+			<script>
+				function EnabledChanged(element){
+					if(element.checked){
+						document.getElementById("enabled").value = "1";
+					}
+					else
+						document.getElementById("enabled").value = "0";
+				}
+				if(document.getElementById("enabled").value == "1")
+					document.getElementById("checkboxEnalbed").checked = true;
+				else
+					document.getElementById("checkboxEnalbed").checked = false;
+			</script>
+			
+			<tr>
+				<td><label>Username </label></td>
+				<td><form:input id="username" path="username" /></td>
+			</tr>
+			
+			<tr>
+				<td><label>Password </label></td>
+				<td><form:input id="password" path="password" /></td>
+			</tr>
+			
+			
+			<script>
+				var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
+			
+				//generate password
+				var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]?";
+				var pwd = "";
+				var length = 12;
+				
+				for (var i = 0, n = chars.length; i < length; ++i) {
+					pwd += chars.charAt(Math.floor(Math.random() * n));
+			    }
+				if(isUpdate == "0")
+					document.getElementById("password").value = pwd;
+			
+			</script>
+<%-- 
+
+			<tr>
 				<td><label>Has no income:</label></td>
 				<td><input onchange="Calculate();" id="studentIncome" type="checkbox" placeholder="" /></td>
 			</tr>
@@ -105,18 +159,17 @@
 			<tr>
 				<td><label>score </label></td>
 				<td><form:input id="score" path="score" /></td>
-			</tr>
+			</tr> --%>
 			
 			<script>
-				var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
 				if(isUpdate=="0"){
 					document.getElementById("department").value="";
 					document.getElementById("registrationYear").value="";
 					document.getElementById("semester").value="";
-					document.getElementById("score").value="";
+				//	document.getElementById("score").value="";
 				}
 				
-				function Calculate(){
+				/*function Calculate(){
 					var score = 0;
 					
 					if(document.getElementById("familyIncome").value < 10000){
@@ -141,7 +194,7 @@
 						score = -10000000;
 					}
 					document.getElementById("score").value = score;
-				}
+				}*/
 			</script>
 			
 			

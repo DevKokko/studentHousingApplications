@@ -9,6 +9,8 @@ public interface StudentDAO {
 	public List<Student> getStudents();
 	
 	public List<Student> getStudentsByDep(int dep);
+	
+	public Student getStudentByUsername(String username);
 
 	public void saveStudent(Student theStudent);
 

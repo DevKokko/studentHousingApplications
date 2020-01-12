@@ -70,7 +70,7 @@ public class RegistrationController {
 				Model theModel,
 				@RequestParam("department") int dep) {
 						
-		String userName = theCrmUser.getUserName();
+		String userName = theCrmUser.getUsername();
 		
 		logger.info("Processing registration form for: " + userName);
 		

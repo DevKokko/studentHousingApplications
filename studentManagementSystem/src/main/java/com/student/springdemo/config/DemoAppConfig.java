@@ -110,7 +110,7 @@ public class DemoAppConfig implements WebMvcConfigurer {
 		}
 		
 		// log the connection props
-		// for sanity's sake, log this info
+		// log this info
 		// just to make sure we are REALLY reading data from properties file
 		
 		logger.info(">>> security.jdbc.url=" + env.getProperty("security.jdbc.url"));

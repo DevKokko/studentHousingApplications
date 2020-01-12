@@ -109,7 +109,6 @@
 					<th> Department </th>
 					<th>Registration Year </th>
 					<th> Semester </th>
-					<th>Score </th>
 	
 					
 					<%-- Only show "Action" column for managers or admin --%>
@@ -143,7 +142,6 @@
 						<td> ${tempStudent.department} </td>
 						<td> ${tempStudent.registrationYear} </td>
 						<td> ${tempStudent.semester} </td>
-						<td> ${tempStudent.score} </td>
 						
 						
 						
