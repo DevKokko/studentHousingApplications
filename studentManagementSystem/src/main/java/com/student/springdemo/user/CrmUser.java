@@ -26,6 +26,8 @@ public class CrmUser {
 		
 	}
 
+	
+
 	public int getEnabled() {
 		return enabled;
 	}
