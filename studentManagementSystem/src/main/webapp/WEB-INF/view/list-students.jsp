@@ -72,7 +72,7 @@
 	
 	<div id="wrapper">
 		<div id="header">
-			<h2>SA - Students Applications</h2>
+			<h2>List of registered students: </h2>
 		</div>
 	</div>
 	
