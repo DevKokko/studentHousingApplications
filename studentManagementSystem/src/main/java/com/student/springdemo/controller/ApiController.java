@@ -35,10 +35,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.student.springdemo.dao.DepartmentDAO;
 import com.student.springdemo.dao.UserDAO;
+import com.student.springdemo.entity.Application;
+import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Student;
 import com.student.springdemo.service.StudentService;
 import com.student.springdemo.service.UserService;
-import com.student.springdemo.user.CrmUser;
 
 @RestController
 @Transactional
@@ -77,34 +78,25 @@ public class ApiController {
         else {
         	return "0";
         }
-		
-/*		final SessionFactory sessionAnnotationFactory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(CrmUser.class).buildSessionFactory();
-		
-		
-		Session session = sessionAnnotationFactory.openSession();
-				
-		
-		Session currentSession = session;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = "/api/submitApplication", method = RequestMethod.POST)
+	public @ResponseBody String submitApplication(HttpServletRequest req, @RequestParam("username") String username, @RequestParam("studentIncome") int studentIncome, @RequestParam("parents") int parents, @RequestParam("familyIncome") int familyIncome, @RequestParam("siblings") int siblings, @RequestParam("fromAnotherCity") int fromAnotherCity, @RequestParam("years") int years, @RequestParam("year") int year)  {
 
-        Query theQuery = currentSession.createQuery("from CrmUser u where u.username=:username");
-        theQuery.setParameter("username", uname);
-
-        List results = theQuery.list();
-
-        if ((results!=null) && (results.size()>0)){
-        	final BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
-        	String dbPassword = ((CrmUser)results.get(0)).getPassword();
-        	dbPassword =  dbPassword.substring(8,dbPassword.length());
-            if (pwEncoder.matches(password, dbPassword)) {
-                return "1";
-            }
-            else{
-                return "0";
-            }
-        }
-        else {
-        	return "0";
-        }*/
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			
+			Student student = studentService.getStudentByUsername(username);
+			
+			Application application = new Application(0, student.getId(), studentIncome, familyIncome, parents, siblings, fromAnotherCity, 0, 0, year);
+			
+			session.save(application);
+		}
+		catch(Exception e) {
+			return "0";
+		}
+		return "1";
 	}
 	
 	@RequestMapping(value = "/api/generateStudents", method = RequestMethod.GET)

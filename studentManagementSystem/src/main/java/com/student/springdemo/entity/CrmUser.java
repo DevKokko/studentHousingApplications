@@ -1,4 +1,4 @@
-package com.student.springdemo.user;
+package com.student.springdemo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="users")
 public class CrmUser {
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="username")
@@ -25,8 +24,6 @@ public class CrmUser {
 	public CrmUser() {
 		
 	}
-
-	
 
 	public int getEnabled() {
 		return enabled;

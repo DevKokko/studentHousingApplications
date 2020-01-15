@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Student;
-import com.student.springdemo.user.CrmUser;
 
 @Repository
 @Transactional
@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
 		
 		//create a query ... sort by last name
 		
-		Query<CrmUser> theQuery = currentSession.createQuery("from CrmUser order by username" , 
+		Query<CrmUser> theQuery = currentSession.createQuery("from CrmUser order by username " , 
 															CrmUser.class);
 					
 		//execute query and get result list
@@ -56,6 +56,28 @@ public class UserDAOImpl implements UserDAO {
 		
 		//return the results
 		return user;
+	}
+
+	@Override
+	public void saveUser(CrmUser theUser) {
+		//get current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//save/update the student
+		currentSession.saveOrUpdate(theUser);
+	}
+
+	@Override
+	public void deleteUser(CrmUser theUser) {
+		//get the current hibernate session
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+				//delete object with primary key
+				Query theQuery = currentSession.createQuery("delete from CrmUser where username=:userId");
+				
+				theQuery.setParameter("userId", theUser);
+				theQuery.executeUpdate();
+		
 	}
 
 }

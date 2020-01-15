@@ -17,128 +17,127 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.student.springdemo.dao.StudentDAO;
+import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Student;
 import com.student.springdemo.service.StudentService;
+import com.student.springdemo.service.UserService;
 import com.student.springdemo.service.DepartmentService;
 
 @Controller
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/user")
+public class UserController {
 	
 	//need to inject our student service
 	@Autowired
-	private StudentService studentService;
+	private UserService userService;
 	
 	@Autowired
 	private DepartmentService departmentService;
 	
 	
 	@GetMapping("/list")
-	public String listStudents(Model theModel) {
+	public String listUsers(Model theModel) {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		List<Student> theStudents = null;
+		List<CrmUser> theUsers = null;
 		
-		if(departmentService.getUserByUsername(username).getDepartment() != 0) {
-			theStudents = studentService.getStudentsByDep(departmentService.getUserByUsername(username).getDepartment());
-		}
-		else {
-			theStudents = studentService.getStudents();
-		}
+		
+		theUsers = userService.getUsers();
+	
 		//add the students to the model
-		theModel.addAttribute("students" , theStudents);
+		theModel.addAttribute("users" , theUsers);
 						
-		return "list-students";
+		return "list-users";
 		
 	}
 	
-	@GetMapping("/listByDep/{dep}")
-	public String listStudentsByDep(Model theModel, @PathVariable("dep") int dep) {
-		
-		// get student from the service
-		List<Student> theStudents = studentService.getStudentsByDep(dep);
-		
-		
-		//add the students to the model
-		theModel.addAttribute("students" , theStudents);
-				
-		return "list-students";
-		
-	}
+//	@GetMapping("/listByDep/{dep}")
+//	public String listStudentsByDep(Model theModel, @PathVariable("dep") int dep) {
+//		
+//		// get student from the service
+//		List<Student> theStudents = studentService.getStudentsByDep(dep);
+//		
+//		
+//		//add the students to the model
+//		theModel.addAttribute("students" , theStudents);
+//				
+//		return "list-students";
+//		
+//	}
 	
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model theModel) {
 		
 		//create model attribute to bind form data
-		Student theStudent = new Student();
+		CrmUser theUser = new CrmUser();
 		
-		theModel.addAttribute("student",theStudent);
+		theModel.addAttribute("username",theUser);
 		theModel.addAttribute("isUpdate", "0");
 		
-		return "student-form";
+		return "user-form";
 	}
 
-	@PostMapping("/saveStudent")
-	public String saveStudent(@ModelAttribute("student") Student theStudent) {
+	@PostMapping("/saveUser")
+	public String saveUser(@ModelAttribute("users") CrmUser theUser) {
 		
 		//save the student using our service
 		
 		final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
-		String encodedPassword = passwordEncoder.encode(theStudent.getPassword());
+		String encodedPassword = passwordEncoder.encode(theUser.getPassword());
 
         // prepend the encoding algorithm id
-        theStudent.setPassword("{bcrypt}" + encodedPassword);
+        theUser.setPassword("{bcrypt}" + encodedPassword);
 		
-		studentService.saveStudent(theStudent);
+        userService.saveUser(theUser);
 		
-		return "redirect:/student/list";
+		return "redirect:/user/list";
 	}
 	
-	@PostMapping("/updateStudent")
-	public String updateStudent(@ModelAttribute("student") Student theStudent) {
+	@PostMapping("/updateUser")
+	public String updateUser(@ModelAttribute("users") CrmUser theUser) {
 		
-		if(theStudent.getPassword().startsWith("{bcrypt}")) {
+		if(theUser.getPassword().startsWith("{bcrypt}")) {
 			
 		}
 		else {
 			final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			
-			String encodedPassword = passwordEncoder.encode(theStudent.getPassword());
+			String encodedPassword = passwordEncoder.encode(theUser.getPassword());
 
 	        // prepend the encoding algorithm id
-	        theStudent.setPassword("{bcrypt}" + encodedPassword);
+	        theUser.setPassword("{bcrypt}" + encodedPassword);
 		}
 		
-		studentService.saveStudent(theStudent);
+		userService.saveUser(theUser);
 		
-		return "redirect:/student/list";
+		return "redirect:/user/list";
 	}
 	
 	@GetMapping("/showFormForUpdate")
-	public String showFormForUpdate(@RequestParam("studentId") int theId, Model theModel) {
+	public String showFormForUpdate(@RequestParam("username") String username, Model theModel) {
 		
 		//get the student from  our service
-		Student theStudent = studentService.getStudent(theId);
+		CrmUser theUser = userService.getUserByUsername(username);
 		
 		//set student as a model attribute to pre-populate the form
-		theModel.addAttribute("student",theStudent);
+		theModel.addAttribute("user",theUser);
 		theModel.addAttribute("isUpdate", "1");
 		
 		//send over to our form
-		return "student-form";
+		return "user-form";
 	}
 	
 	@GetMapping("/delete")
-	public String deleteStudent(@RequestParam("studentId") int theId) {
+	public String deleteUser(@RequestParam("username") String username) {
 		
 		//delete the student
-		studentService.deleteStudent(theId);
+		userService.deleteUser(userService.getUserByUsername(username));
 		
 		
-		return "redirect:/student/list";
+		return "redirect:/user/list";
 	}
 	
 	@GetMapping("/access-denied")
@@ -149,5 +148,3 @@ public class StudentController {
 	}
 	
 }
-
-

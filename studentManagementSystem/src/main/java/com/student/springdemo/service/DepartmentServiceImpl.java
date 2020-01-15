@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.dao.DepartmentDAO;
+import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Department;
-import com.student.springdemo.user.CrmUser;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService{

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.entity.Student;
+import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Department;
-import com.student.springdemo.user.CrmUser;
 
 @Repository
 @Transactional

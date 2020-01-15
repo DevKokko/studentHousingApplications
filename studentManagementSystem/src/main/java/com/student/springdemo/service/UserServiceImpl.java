@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.dao.UserDAO;
-import com.student.springdemo.user.CrmUser;
+import com.student.springdemo.entity.CrmUser;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,5 +25,19 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public List<CrmUser> getUsers(){
 		return userDAO.getUsers();
+	}
+
+	@Override
+	@Transactional
+	public void saveUser(CrmUser theUser) {
+		userDAO.saveUser(theUser);
+		
+	}
+
+	@Override
+	@Transactional
+	public void deleteUser(CrmUser theUser) {
+		userDAO.deleteUser(theUser);
+		
 	}
 }

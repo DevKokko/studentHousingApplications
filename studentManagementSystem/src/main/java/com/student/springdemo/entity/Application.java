@@ -40,9 +40,24 @@ public class Application {
 	
 	@Column(name="approved")
 	private int approved; //0 = pending, 1 = approved, -1 = rejected
+	
+	@Column(name="year")
+	private int year;
 
 	
 	
+	public int getYear() {
+		return year;
+	}
+
+
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}
@@ -152,7 +167,7 @@ public class Application {
 
 
 	public Application(int id, int student_id, int student_income, int family_income, int unemployeed_parents,
-			int studying_siblings, int is_from_another_city, int score, int approved) {
+			int studying_siblings, int is_from_another_city, int score, int approved, int year) {
 		this.id = id;
 		this.student_id = student_id;
 		this.student_income = student_income;
@@ -162,6 +177,7 @@ public class Application {
 		this.is_from_another_city = is_from_another_city;
 		this.score = score;
 		this.approved = approved;
+		this.year = year;
 	}
 
 
