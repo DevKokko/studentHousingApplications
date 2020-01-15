@@ -36,7 +36,7 @@
 	<h3>Save User</h3>
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
 		String action = isUpdate=="0"?"saveUser":"updateUser";
-		%>
+	%>
 
 	<form:form action="<%= action %>" modelAttribute="CrmUser" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
