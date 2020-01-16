@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<title>Save User</title>
+	<title>Save Application</title>
 	
 	<link type="text/css"
 			rel="stylesheet"
@@ -33,43 +33,59 @@
 
 <div id="container">
 <div id="content">
-	<h3>Save User</h3>
+	<h3>Save Application</h3>
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
-		String action = isUpdate=="0"?"saveUser":"updateUser";
-	%>
+		String action = isUpdate=="0"?"saveApplication":"updateApplication";
+		%>
 
-	<form:form action="<%= action %>" modelAttribute="users" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form action="<%= action %>" modelAttribute="applications" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
-	<form:hidden path="username" />
+	<form:hidden path="id" />
 	<table>
 		<tbody>
 			<tr>
-				<td><label>Username:</label></td>
-				<td><form:input path="username" /></td>
+				<td><label>Student income:</label></td>
+				<td><form:input path="student_income" /></td>
 			</tr>
 			
 			<tr>
-				<td><label>Password:</label></td>
-				<td><form:input path="password" /></td>
+				<td><label>Family income:</label></td>
+				<td><form:input path="family_income" /></td>
 			</tr>
 			
 			<tr>
-				<td><label>Enabled:</label></td>
-				<td><form:input path="enabled" /></td>
+				<td><label>Unemployeed Parents: </label></td>
+				<td><form:input path="unemployeed_parents" /></td>
 			</tr>
 			
-			<%-- 
 			<tr>
-				<td><label>Enabled </label></td>
-				<td>
-					<label class="switch">
-					  <input form="fakeForm" id="checkboxEnalbed" type="checkbox" name="enabled" onchange="EnabledChanged(this);">
-					  <span class="slider round"></span>
-					</label>
-					<form:input id="enabled" path="enabled" style="display:none;"/>
-				</td>
-			</tr> --%>
+				<td><label>Studying siblings:</label></td>
+				<td><form:input path="studying_siblings" /></td>
+			</tr>
+			
+			<tr>
+				<td><label>is From Another City</label></td>
+				<td><form:input  path="is_from_another_city" /></td>
+			</tr>
+			
+			<tr>
+				<td><label>Score</label></td>
+				<td><form:input path="score" /></td>
+			</tr>
+			
+			<tr>
+				<td><label>Approved </label></td>
+				<td><form:input path="approved" /></td>
+			</tr>
+			
+			<tr>
+				<td><label>year </label></td>
+				<td><form:input path="year" /></td>
+			</tr>
+			
+			
+			
 			<script>
 				function EnabledChanged(element){
 					if(element.checked){
@@ -85,22 +101,7 @@
 			</script>
 			
 		
-			
-			<script>
-				var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
-			
-				//generate password
-				var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]?";
-				var pwd = "";
-				var length = 12;
-				
-				for (var i = 0, n = chars.length; i < length; ++i) {
-					pwd += chars.charAt(Math.floor(Math.random() * n));
-			    }
-				if(isUpdate == "0")
-					document.getElementById("password").value = pwd;
-			
-			</script>
+		
 <%-- 
 
 			<tr>
@@ -135,11 +136,38 @@
 			
 			<script>
 				if(isUpdate=="0"){
-					document.getElementById("username").value="";
-					document.getElementById("password").value="";
-					document.getElementById("enabled").value="";
+					document.getElementById("department").value="";
+					document.getElementById("registrationYear").value="";
+					document.getElementById("semester").value="";
+				//	document.getElementById("score").value="";
 				}
 				
+				/*function Calculate(){
+					var score = 0;
+					
+					if(document.getElementById("familyIncome").value < 10000){
+						score+=100;
+					}
+					else if(document.getElementById("familyIncome").value < 15000){
+						score+=30;
+					}
+					
+					score += document.getElementById("siblings").value*20;
+					
+					if(document.getElementById("fromAnotherCity").checked){
+						score+=50;
+					}
+					
+					score -= document.getElementById("years").value*10;
+										
+					if(document.getElementById("studentIncome").checked && document.getElementById("parents").checked){
+						score = 10000000;
+					}
+					if(document.getElementById("semester").value>8){
+						score = -10000000;
+					}
+					document.getElementById("score").value = score;
+				}*/
 			</script>
 			
 			
@@ -162,7 +190,7 @@
 	<div style="clear; both;"> </div>
 	
 	<p>
-		<a href="${pageContext.request.contextPath}/user/list">Back to List</a>
+		<a href="${pageContext.request.contextPath}/application/list">Back to List</a>
 	</p>
 	
 </div>	

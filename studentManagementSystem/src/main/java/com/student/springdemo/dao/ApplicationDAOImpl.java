@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.Department;
+import com.student.springdemo.entity.Student;
 
 @Repository
 @Transactional
@@ -36,8 +37,57 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 	}
 
 	@Override
-	public List<Application> getApplicationsByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Application> getApplicationByUsername(String username) {
+
+		//get the current hibernate session
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+		
+				
+				Query<Application> theQuery = currentSession.createQuery("from Application " , 
+																	Application.class);
+				
+					
+				//execute query and get result list
+				List<Application> applications = theQuery.getResultList();
+				
+				//return the results
+				return applications;
+	}
+
+	@Override
+	public void saveApplication(Application theId) {
+		//get current hibernate session
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+				//save/update the student
+				currentSession.saveOrUpdate(theId);
+				
+		
+	}
+
+	@Override
+	public Application getApplication(int theId) {
+		//get the current hibernate session
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//now retrieve/read from database using the primary key
+		Application theApplication = currentSession.get(Application.class, theId);
+		
+		return theApplication;
+	}
+
+	@Override
+	public void deleteApplication(int theId) {
+		//get the current hibernate session
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+				//delete object with primary key
+				Query theQuery = currentSession.createQuery("delete from Application where id=:applicationId");
+				
+				theQuery.setParameter("applicationId", theId);
+				theQuery.executeUpdate();
+		
 	}
 }

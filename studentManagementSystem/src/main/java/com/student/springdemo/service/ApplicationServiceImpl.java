@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.dao.ApplicationDAO;
 import com.student.springdemo.entity.Application;
+import com.student.springdemo.entity.Student;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService{
@@ -23,7 +24,27 @@ public class ApplicationServiceImpl implements ApplicationService{
 	
 	@Override
 	@Transactional
-	public List<Application> getApplicationsByUsername(String username){
-		return applicationDAO.getApplicationsByUsername(username);
+	public List<Application> getApplicationByUsername(String username){
+		return applicationDAO.getApplicationByUsername(username);
+	}
+
+	@Override
+	@Transactional
+	public void saveApplication(Application theId) {
+		applicationDAO.saveApplication(theId);
+		
+	}
+
+	@Override
+	@Transactional
+	public Application getApplication(int theId) {
+		return applicationDAO.getApplication(theId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteApplication(int theId) {
+		applicationDAO.deleteApplication(theId);
+		
 	}
 }
