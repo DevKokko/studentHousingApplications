@@ -64,19 +64,25 @@ public class UserDAOImpl implements UserDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		//save/update the student
-		currentSession.saveOrUpdate(theUser);
+		currentSession.save(theUser);
 	}
 
 	@Override
-	public void deleteUser(CrmUser theUser) {
+	public void deleteUser(CrmUser user) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//save/update the student
+		currentSession.delete(user);
+		
 		//get the current hibernate session
-				Session currentSession = sessionFactory.getCurrentSession();
+			/*	Session currentSession = sessionFactory.getCurrentSession();
 				
 				//delete object with primary key
-				Query theQuery = currentSession.createQuery("delete from CrmUser where username=:userId");
+				Query theQuery = currentSession.createQuery("delete from CrmUser where username=:username");
 				
-				theQuery.setParameter("userId", theUser);
-				theQuery.executeUpdate();
+				theQuery.setParameter("username", username);
+				theQuery.executeUpdate();*/
 		
 	}
 

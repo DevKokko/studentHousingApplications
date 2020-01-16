@@ -36,27 +36,34 @@
 	<h3>Save User</h3>
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
 		String action = isUpdate=="0"?"saveUser":"updateUser";
+		boolean disabledField = isUpdate=="0"?false:true;
 	%>
 
-	<form:form action="<%= action %>" modelAttribute="users" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form action="<%= action %>" modelAttribute="user" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
-	<form:hidden path="username" />
+	<!--<form:hidden path="username" />-->
 	<table>
 		<tbody>
 			<tr>
 				<td><label>Username:</label></td>
-				<td><form:input path="username" /></td>
+				<td><form:input path="username" disabled="<%= disabledField %>"/></td>
 			</tr>
 			
 			<tr>
 				<td><label>Password:</label></td>
-				<td><form:input path="password" /></td>
+				<td><form:input id="password" path="password" /></td>
 			</tr>
 			
 			<tr>
 				<td><label>Enabled:</label></td>
-				<td><form:input path="enabled" /></td>
+				<td><form:input id="enabled" path="enabled" style="display:none;" />
+					<label class="switch">
+					  <input form="fakeForm" id="checkboxEnalbed" onchange="EnabledChanged(this);" type="checkbox">
+					  <span class="slider round"></span>
+					</label>
+				</td>
+				
 			</tr>
 			
 			<%-- 
@@ -70,37 +77,7 @@
 					<form:input id="enabled" path="enabled" style="display:none;"/>
 				</td>
 			</tr> --%>
-			<script>
-				function EnabledChanged(element){
-					if(element.checked){
-						document.getElementById("enabled").value = "1";
-					}
-					else
-						document.getElementById("enabled").value = "0";
-				}
-				if(document.getElementById("enabled").value == "1")
-					document.getElementById("checkboxEnalbed").checked = true;
-				else
-					document.getElementById("checkboxEnalbed").checked = false;
-			</script>
-			
-		
-			
-			<script>
-				var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
-			
-				//generate password
-				var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]?";
-				var pwd = "";
-				var length = 12;
-				
-				for (var i = 0, n = chars.length; i < length; ++i) {
-					pwd += chars.charAt(Math.floor(Math.random() * n));
-			    }
-				if(isUpdate == "0")
-					document.getElementById("password").value = pwd;
-			
-			</script>
+
 <%-- 
 
 			<tr>
@@ -134,11 +111,39 @@
 			</tr> --%>
 			
 			<script>
-				if(isUpdate=="0"){
-					document.getElementById("username").value="";
-					document.getElementById("password").value="";
-					document.getElementById("enabled").value="";
+			
+			
+				function EnabledChanged(element){
+					if(element.checked){
+						document.getElementById("enabled").value = "1";
+					}
+					else
+						document.getElementById("enabled").value = "0";
 				}
+				if(document.getElementById("enabled").value == "1")
+					document.getElementById("checkboxEnalbed").checked = true;
+				else
+					document.getElementById("checkboxEnalbed").checked = false;
+
+				
+			
+				window.addEventListener('load', function () {
+					var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
+					//generate password
+					var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]?";
+					var pwd = "";
+					var length = 12;
+					for (var i = 0, n = chars.length; i < length; ++i) {
+						pwd += chars.charAt(Math.floor(Math.random() * n));
+				    }
+				
+					if(isUpdate=="0"){
+						document.getElementById("username").value="";
+						document.getElementById("password").value = pwd;
+						document.getElementById("enabled").value="0";
+					}
+				
+				});
 				
 			</script>
 			

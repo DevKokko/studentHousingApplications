@@ -44,10 +44,7 @@ public class Student {
 	private String password;
 	
 	@Column(name="enabled")
-	private int enabled = 0;
-	
-	
-	
+	private int enabled = 0;	
 	
 
 	public Student() {

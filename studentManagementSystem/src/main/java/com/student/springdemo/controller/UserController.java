@@ -73,7 +73,7 @@ public class UserController {
 		//create model attribute to bind form data
 		CrmUser theUser = new CrmUser();
 		
-		theModel.addAttribute("username",theUser);
+		theModel.addAttribute("user",theUser);
 		theModel.addAttribute("isUpdate", "0");
 		
 		return "user-form";
@@ -84,14 +84,21 @@ public class UserController {
 		
 		//save the student using our service
 		
+		CrmUser findUser = userService.getUserByUsername(theUser.getUsername());
+		if(findUser != null) {
+			return "redirect:/user/list?alreadyExists=1";
+		}
+		
 		final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		String encodedPassword = passwordEncoder.encode(theUser.getPassword());
 
         // prepend the encoding algorithm id
-        theUser.setPassword("{bcrypt}" + encodedPassword);
+        //theUser.setPassword("{bcrypt}" + encodedPassword);
+        
+        CrmUser crmUser = new CrmUser(theUser.getUsername(), "{bcrypt}" + encodedPassword, theUser.getEnabled());
 		
-        userService.saveUser(theUser);
+        userService.saveUser(crmUser);
 		
 		return "redirect:/user/list";
 	}

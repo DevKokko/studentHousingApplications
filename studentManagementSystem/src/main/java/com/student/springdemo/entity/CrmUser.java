@@ -10,8 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="users")
 public class CrmUser {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="username")
 	private String username;
 	
@@ -49,5 +49,9 @@ public class CrmUser {
 		this.password = password;
 	}
 	
-	
+	public CrmUser(String username, String password, int enabled) {
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
 }

@@ -43,9 +43,24 @@ public class Application {
 	
 	@Column(name="year")
 	private int year;
+	
+	@Column(name="gotFreeHousing")
+	private int gotFreeHousing;
 
 	
 	
+	public int getGotFreeHousing() {
+		return gotFreeHousing;
+	}
+
+
+
+	public void setGotFreeHousing(int gotFreeHousing) {
+		this.gotFreeHousing = gotFreeHousing;
+	}
+
+
+
 	public int getYear() {
 		return year;
 	}

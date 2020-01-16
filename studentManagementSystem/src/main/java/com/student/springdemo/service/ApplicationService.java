@@ -15,5 +15,7 @@ public interface ApplicationService {
 	public Application getApplication(int theId);
 
 	public void deleteApplication(int theId);
-	List<Application> getApplicationByUsername(String username);
+	public List<Application> getApplications();
+	public List getApplicationsByDep(int dep);
+	public int howManyYearsFreeHousing(int theId);
 }

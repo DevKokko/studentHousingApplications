@@ -1,5 +1,6 @@
 package com.student.springdemo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ApplicationController {
 	private ApplicationService applicationService;
 	
 	@Autowired
+	private StudentService studentService;
+	
+	@Autowired
 	private DepartmentService departmentService;
 	
 	
@@ -41,16 +45,44 @@ public class ApplicationController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		List<Application> theApplications = null;
+		List theApplications = null;
+		List<Student> theStudents = null;
 		
+		List<Application> finalApplications = new ArrayList<Application>();
 		
-		theApplications = applicationService.getApplicationByUsername(username);
+	/*	if(departmentService.getUserByUsername(username).getDepartment() != 0) {
+			theApplications = applicationService.getApplicationsByDep(departmentService.getUserByUsername(username).getDepartment());
+		}
+		else {
+			theApplications = applicationService.getApplications();
+		}*/
+		
+		theApplications = applicationService.getApplications();
+		
+		theStudents = studentService.getStudents();
+		
+		for(int i = 0; i<theApplications.size(); i++) {
+			if(((Student)findStudentById(theStudents,((Application)theApplications.get(i)).getStudent_id())).getDepartment() == departmentService.getUserByUsername(username).getDepartment()){
+				if(((Application)theApplications.get(i)).getGotFreeHousing() == 0)
+					finalApplications.add((Application)theApplications.get(i));
+			}
+		}
 		
 		//add the students to the model
-		theModel.addAttribute("applications" , theApplications);
+		theModel.addAttribute("applications" , finalApplications);
+		theModel.addAttribute("students" , theStudents);
 						
 		return "list-applications";
 		
+	}
+	
+	private Student findStudentById(List<Student> students, int id) {
+		for(int j = 0; j<students.size(); j++) {
+			if(((Student)students.get(j)).getId() == id){
+				return ((Student)students.get(j));
+			}
+		}
+		return null;
 	}
 	
 	
@@ -113,6 +145,76 @@ public class ApplicationController {
 		
 		//delete the student
 		applicationService.deleteApplication(theId);
+		
+		
+		return "redirect:/application/list";
+	}
+	
+	@GetMapping("/approve")
+	public String approveApplication(@RequestParam("applicationId") int theId) {
+				
+		Application application = applicationService.getApplication(theId);
+		
+		application.setApproved(1);
+		application.setScore(CalculateScore(application));
+		
+		applicationService.saveApplication(application);
+		
+		return "redirect:/application/list";
+	}
+	
+	private int CalculateScore(Application application) {
+		
+		int score = 0;
+				
+		if(application.getFamily_income() < 10000){
+			score+=100;
+		}
+		else if(application.getFamily_income() < 15000){
+			score+=30;
+		}
+		
+		score += application.getStudying_siblings()*20;
+		
+		if(application.getIs_from_another_city() == 1){
+			score+=50;
+		}
+		
+		score -= applicationService.howManyYearsFreeHousing(application.getStudent_id())*10;
+							
+		if(application.getStudent_income()==1 && application.getUnemployeed_parents()==1){
+			score = 10000000;
+		}
+		if(studentService.getStudent(application.getStudent_id()).getSemester()>8){
+			score = -10000000;
+		}
+		
+		return score;
+	}
+	
+	@GetMapping("/reject")
+	public String rejectApplication(@RequestParam("applicationId") int theId) {
+		
+		Application application = applicationService.getApplication(theId);
+		
+		application.setApproved(-1);
+		application.setScore(0);
+		
+		applicationService.saveApplication(application);
+		
+		
+		return "redirect:/application/list";
+	}
+	
+	@GetMapping("/pending")
+	public String pendingApplication(@RequestParam("applicationId") int theId) {
+		
+		Application application = applicationService.getApplication(theId);
+		
+		application.setApproved(0);
+		application.setScore(0);
+		
+		applicationService.saveApplication(application);
 		
 		
 		return "redirect:/application/list";

@@ -24,8 +24,14 @@ public class ApplicationServiceImpl implements ApplicationService{
 	
 	@Override
 	@Transactional
-	public List<Application> getApplicationByUsername(String username){
-		return applicationDAO.getApplicationByUsername(username);
+	public List<Application> getApplications(){
+		return applicationDAO.getApplications();
+	}
+	
+	@Override
+	@Transactional
+	public List getApplicationsByDep(int dep){
+		return applicationDAO.getApplicationsByDep(dep);
 	}
 
 	@Override
@@ -46,5 +52,11 @@ public class ApplicationServiceImpl implements ApplicationService{
 	public void deleteApplication(int theId) {
 		applicationDAO.deleteApplication(theId);
 		
+	}
+	
+	@Override
+	@Transactional
+	public int howManyYearsFreeHousing(int theId) {
+		return applicationDAO.howManyYearsFreeHousing(theId);
 	}
 }

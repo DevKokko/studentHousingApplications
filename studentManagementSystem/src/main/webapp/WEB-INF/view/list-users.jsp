@@ -172,6 +172,12 @@
 	</div>
 	
 	<p></p>
+	<script>
+		var alreadyExists = "<%= request.getParameter("alreadyExists") %>";
+		if(alreadyExists == "1"){
+			alert("A user with that username already exists");
+		}
+	</script>
 		<!-- <script>
 		$(document).ready( function () {
 		    $('#studentsTable').DataTable({

@@ -37,7 +37,7 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 	}
 
 	@Override
-	public List<Application> getApplicationByUsername(String username) {
+	public List<Application> getApplications() {
 
 		//get the current hibernate session
 				Session currentSession = sessionFactory.getCurrentSession();
@@ -50,6 +50,23 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 					
 				//execute query and get result list
 				List<Application> applications = theQuery.getResultList();
+				
+				//return the results
+				return applications;
+	}
+	
+	@Override
+	public List getApplicationsByDep(int dep) {
+
+		//get the current hibernate session
+				Session currentSession = sessionFactory.getCurrentSession();
+				
+		
+				Query theQuery = currentSession.createQuery("from Application");
+				
+					
+				//execute query and get result list
+				List applications = theQuery.getResultList();
 				
 				//return the results
 				return applications;
@@ -76,6 +93,22 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 		Application theApplication = currentSession.get(Application.class, theId);
 		
 		return theApplication;
+	}
+	
+	@Override
+	public int howManyYearsFreeHousing(int theId) {
+		//get the current hibernate session
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//now retrieve/read from database using the primary key
+		Query<Application> theQuery = currentSession.createQuery("from Application WHERE student_id = :student_id AND gotFreeHousing=1" , 
+				Application.class);
+		
+		theQuery.setParameter("student_id", theId);
+		
+		//return the results
+		return theQuery.getResultList().size();
 	}
 
 	@Override

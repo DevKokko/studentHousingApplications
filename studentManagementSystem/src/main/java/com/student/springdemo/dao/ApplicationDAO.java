@@ -13,5 +13,7 @@ public interface ApplicationDAO {
 	public void saveApplication(Application theId);
 	public Application getApplication(int theId);
 	public void deleteApplication(int theId);
-	public List<Application> getApplicationByUsername(String username);
+	public List<Application> getApplications();
+	public List getApplicationsByDep(int dep);
+	public int howManyYearsFreeHousing(int theId);
 }
