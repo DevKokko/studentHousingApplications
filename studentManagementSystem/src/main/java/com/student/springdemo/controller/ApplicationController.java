@@ -62,7 +62,7 @@ public class ApplicationController {
 		theStudents = studentService.getStudents();
 		
 		for(int i = 0; i<theApplications.size(); i++) {
-			if(((Student)findStudentById(theStudents,((Application)theApplications.get(i)).getStudent_id())).getDepartment() == departmentService.getUserByUsername(username).getDepartment()){
+			if((((Student)findStudentById(theStudents,((Application)theApplications.get(i)).getStudent_id())).getDepartment() == departmentService.getUserByUsername(username).getDepartment()) || departmentService.getUserByUsername(username).getDepartment() == 0){
 				if(((Application)theApplications.get(i)).getGotFreeHousing() == 0)
 					finalApplications.add((Application)theApplications.get(i));
 			}

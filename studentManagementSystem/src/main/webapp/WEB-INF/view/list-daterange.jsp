@@ -7,7 +7,7 @@
 <html>
 
 <head>
-	<title>List Applications</title>
+	<title>List Date Range</title>
 	
 	<!-- reference our style sheet -->
 
@@ -72,7 +72,7 @@
 	
 	<div id="wrapper">
 		<div id="header">
-			<h2>List of applications: </h2>
+			<h2>List date range : </h2>
 		</div>
 	</div>
 	
@@ -82,22 +82,31 @@
 		
 			<p>
 				User: <b><security:authentication property="principal.username" /></b>, Role(s): <b><security:authentication property="principal.authorities" /></b>
-			</p>	
+			</p>
+		
+
+			<security:authorize access="hasAnyRole('MANAGER', 'ADMIN')">
+			
+				<!-- put new button: Add Student -->
+			
+				<input type="button" value="Add Student"
+					   onclick="window.location.href='showFormForAdd'; return false;"
+					   class="add-button"
+				/>
+			
+			</security:authorize>
+	
 		
 			<!--  add our html table here -->
 		
-			<table id="applicationsTable" class="table table-striped table-bordered">
+			<table id="studentsTable" class="table table-striped table-bordered">
 				<thead>
 				<tr>
-					<th>Student id</th>
-					<th>Student has no income</th>
-					<th>Family income</th>
-					<th>Unemployed parents </th>
-					<th>Studying siblings </th>
-					<th>Comes from another city </th>
-					<th>Score </th>
-					<th>Approved</th>
-					<th>Year</th>
+					<th>id</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th> Year</th>
+	
 					
 					<%-- Only show "Action" column for managers or admin --%>
 					<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
@@ -110,76 +119,26 @@
 				<thead>
 				<tbody>
 					<!-- loop over and print our students -->
-					<c:forEach var="tempApplication" items="${applications}">
+					<c:forEach var="tempDaterange" items="${students}">
 					
 						<!-- construct an "update" link with student id -->
-						<c:url var="updateLink" value="/application/showFormForUpdate">
-							<c:param name="applicationId" value="${tempApplication.id}" />
+						<c:url var="updateLink" value="/student/showFormForUpdate">
+							<c:param name="studentId" value="${tempStudent.id}" />
 						</c:url>					
 	
 						<!-- construct an "delete" link with student id -->
-						<c:url var="deleteLink" value="/application/delete">
-							<c:param name="applicationId" value="${tempApplication.id}" />
-						</c:url>	
-						<c:url var="approveLink" value="/application/approve">
-							<c:param name="applicationId" value="${tempApplication.id}" />
-						</c:url>	
-						<c:url var="rejectLink" value="/application/reject">
-							<c:param name="applicationId" value="${tempApplication.id}" />
-						</c:url>
-						<c:url var="pendingLink" value="/application/pending">
-							<c:param name="applicationId" value="${tempApplication.id}" />
+						<c:url var="deleteLink" value="/student/delete">
+							<c:param name="studentId" value="${tempStudent.id}" />
 						</c:url>		
 						
 						<tr>
-						<td> ${tempApplication.student_id} </td>
-						<td> 
-							<c:choose>
-								<c:when test="${tempApplication.student_income =='1'}">
-							       	<span style="">Has no income</span>
-							    </c:when> 
-							    <c:when test="${tempApplication.student_income=='0'}">
-							       	<span style="">Has income</span>
-							    </c:when>    
-							</c:choose>
-						</td>
-						<td> ${tempApplication.family_income} </td>
-						<td> 
-							<c:choose>
-								<c:when test="${tempApplication.unemployeed_parents =='1'}">
-							       	<span style="">Both parents unemployeed</span>
-							    </c:when> 
-							    <c:when test="${tempApplication.unemployeed_parents =='0'}">
-							       	<span style="">Both parents not unemployeed</span>
-							    </c:when>    
-							</c:choose>
-						</td>
-						<td> ${tempApplication.studying_siblings} </td>
-						<td> 
-							<c:choose>
-								<c:when test="${tempApplication.is_from_another_city =='1'}">
-							       	<span style="">Yes</span>
-							    </c:when> 
-							    <c:when test="${tempApplication.is_from_another_city =='0'}">
-							       	<span style="">No</span>
-							    </c:when>    
-							</c:choose>
-						</td>
-						<td> ${tempApplication.score} </td>
-						<td>  
-							<c:choose>
-								<c:when test="${tempApplication.approved=='1'}">
-							       	<span style="color:green;">Accepted</span>
-							    </c:when> 
-							    <c:when test="${tempApplication.approved=='0'}">
-							       	<span style="color:darkgoldenrod;">Pending</span>
-							    </c:when>    
-							    <c:otherwise>
-							        <span style="color:red;">Rejected</span>
-							    </c:otherwise>
-							</c:choose>
-						</td>
-						<td> ${tempApplication.year} </td>
+						<td> ${tempStudent.firstName} </td>
+						<td> ${tempStudent.lastName} </td>
+						<td> ${tempStudent.email} </td>
+						<td> ${tempStudent.phoneNumber} </td>
+						<td> ${tempStudent.department} </td>
+						<td> ${tempStudent.registrationYear} </td>
+						<td> ${tempStudent.semester} </td>
 						
 						
 						
@@ -188,26 +147,14 @@
 							<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
 							
 								<td>
-									<security:authorize access="hasAnyRole('ADMIN')">
+									<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${updateLink}"><i class="fas fa-user-edit" style="color:orange;"></i></a>
 									</security:authorize>
 		
 									<security:authorize access="hasAnyRole('ADMIN')">
 										<a href="${deleteLink}"
-										   onclick="if (!(confirm('Are you sure you want to delete this application?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
-									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
-										<!-- display the update link -->
-										<a href="${approveLink}"><i class="fa fa-check-circle" style="color:green;"></i></a>
-									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
-										<!-- display the update link -->
-										<a href="${pendingLink}"><i class="fa fa-clock-o" aria-hidden="true" style="color:darkgoldenrod;"></i></a>
-									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
-										<!-- display the update link -->
-										<a href="${rejectLink}"><i class="fa fa-times-circle" style="color:red"></i></a>
+										   onclick="if (!(confirm('Are you sure you want to delete this student?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
 									</security:authorize>
 								</td>
 	
@@ -225,7 +172,7 @@
 	</div>
 	
 	<p></p>
-	<!-- 	<script>
+		<script>
 		$(document).ready( function () {
 		    $('#studentsTable').DataTable({
 		    		dom: 'Bflrtip',
@@ -233,7 +180,7 @@
 		    });
 		    
 		} );
-		</script> -->
+		</script>
 </body>
 
 </html>

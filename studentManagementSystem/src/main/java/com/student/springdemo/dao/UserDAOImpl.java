@@ -46,13 +46,16 @@ public class UserDAOImpl implements UserDAO {
 		
 		//create a query ... sort by last name
 		
-		Query<CrmUser> theQuery = currentSession.createQuery("from CrmUser WHERE username = :u order by username" , 
+		Query<CrmUser> theQuery = currentSession.createQuery("from CrmUser WHERE username =:u order by username" , 
 															CrmUser.class);
 		
 		theQuery.setParameter("u", username);
 			
+		CrmUser user = null;
+		
 		//execute query and get result list
-		CrmUser user = theQuery.getSingleResult();
+		if(theQuery.getResultList().size() != 0)
+			user = theQuery.getSingleResult();
 		
 		//return the results
 		return user;
