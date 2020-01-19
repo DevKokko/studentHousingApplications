@@ -3,6 +3,7 @@ package com.student.springdemo.controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -38,6 +39,8 @@ import com.student.springdemo.dao.UserDAO;
 import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Student;
+import com.student.springdemo.service.ApplicationService;
+import com.student.springdemo.service.LimitService;
 import com.student.springdemo.service.StudentService;
 import com.student.springdemo.service.UserService;
 
@@ -50,6 +53,12 @@ public class ApiController {
 	
 	@Autowired
 	StudentService studentService;
+	
+	@Autowired
+	LimitService limitService;
+	
+	@Autowired
+	ApplicationService applicationService;
 	
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
@@ -151,6 +160,43 @@ public class ApiController {
 		}
 		
 		return output;
+	}
+	
+	@RequestMapping(value = "/api/getStatus", method = RequestMethod.POST)
+	public @ResponseBody String getStatus(@RequestParam("username") String username) throws FileNotFoundException, IOException {
+		
+		Student student = studentService.getStudentByUsername(username);
+		int student_id = student.getId();
+		
+		List<Application> applications = applicationService.getApplicationsByDep(student.getDepartment());
+		Collections.sort(applications, Collections.reverseOrder());
+		
+		int rank = 0;
+		int approved = 0;
+		boolean found = false;
+		
+		for(int i = 0; i<applications.size(); i++) {
+			if(applications.get(i).getApproved() == 1) {
+				rank++;
+			}
+			if(applications.get(i).getStudent_id() == student_id) {
+				approved = applications.get(i).getApproved();
+				found = true;
+				break;
+			}
+		}
+		if(!found || approved == -1) {
+			rank = 0;
+		}
+		
+		
+		int getsHousing = 0;
+		if(rank <= limitService.getLimitByDepartmentId(student.getDepartment()).getApplication_limit() && rank>0) {
+			getsHousing = 1;
+		}
+		String data = "{\"rank\":\""+rank+"\",\"approved\":\""+approved+"\",\"getsHousing\":\""+getsHousing+"\"}";
+		
+		return data;
 	}
 	
 }

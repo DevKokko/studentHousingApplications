@@ -6,7 +6,7 @@ import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.Student;
 
 public interface ApplicationService {
-	public Application getApplicationById(int id);
+	public Application getApplicationByStudentId(int id);
 	//public List<Application> getApplicationsById(String id);
 	
 

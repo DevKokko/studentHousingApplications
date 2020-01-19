@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		//save/update the student
-		currentSession.save(theUser);
+		currentSession.saveOrUpdate(theUser);
 	}
 
 	@Override

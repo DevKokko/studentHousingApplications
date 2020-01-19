@@ -18,8 +18,8 @@ public class ApplicationServiceImpl implements ApplicationService{
 	
 	@Override
 	@Transactional
-	public Application getApplicationById(int id) {
-		return applicationDAO.getApplicationById(id);
+	public Application getApplicationByStudentId(int id) {
+		return applicationDAO.getApplicationByStudentId(id);
 	}
 	
 	@Override

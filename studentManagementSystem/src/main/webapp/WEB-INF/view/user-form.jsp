@@ -37,17 +37,19 @@
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
 		String action = isUpdate=="0"?"saveUser":"updateUser";
 		boolean disabledField = isUpdate=="0"?false:true;
+		
+		String authority = (String)request.getAttribute("authority");
 	%>
 
-	<form:form action="<%= action %>" modelAttribute="user" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form onsubmit="SubmitForm()" action="<%= action %>" modelAttribute="user" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
-	<!--<form:hidden path="username" />-->
+	<%--<form:hidden path="username" />--%>
 	<table>
 		<tbody>
 			<tr>
 				<td><label>Username:</label></td>
-				<td><form:input path="username" disabled="<%= disabledField %>"/></td>
+				<td><form:input id="username" path="username" disabled="<%= disabledField %>"/></td>
 			</tr>
 			
 			<tr>
@@ -64,6 +66,21 @@
 					</label>
 				</td>
 				
+			</tr>
+			<tr>
+				<td><label>Authority:</label></td>
+				<td>
+					<select name="authority" id="authority">
+						<option value="ROLE_EMPLOYEE">Employee</option>
+						<option value="ROLE_MANAGER">Manager</option>
+						<option value="ROLE_ADMIN">Admin</option>
+					</select>
+					<script>
+						var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
+						if(isUpdate=="1")
+							document.getElementById("authority").value = "<%= authority %>";
+					</script>
+				</td>
 			</tr>
 			
 			<%-- 
@@ -144,6 +161,10 @@
 					}
 				
 				});
+				
+				function SubmitForm(){
+					document.getElementById("username").disabled = false;
+				}
 				
 			</script>
 			

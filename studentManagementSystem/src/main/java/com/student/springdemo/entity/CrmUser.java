@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="users")
+
 public class CrmUser {
 
 	@Id
@@ -20,7 +21,7 @@ public class CrmUser {
 	
 	@Column(name="enabled")
 	private int enabled;
-		
+	
 	public CrmUser() {
 		
 	}

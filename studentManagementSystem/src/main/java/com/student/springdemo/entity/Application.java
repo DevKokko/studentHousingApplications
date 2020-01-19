@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Entity
 @Table(name="applications")
-public class Application {
+public class Application implements Comparable<Application> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -196,7 +196,11 @@ public class Application {
 	}
 
 
-
 	public Application(){}
+	
+	@Override
+    public int compareTo(Application a) {
+        return Integer.compare(this.getScore(), a.getScore());
+    }
 	
 }

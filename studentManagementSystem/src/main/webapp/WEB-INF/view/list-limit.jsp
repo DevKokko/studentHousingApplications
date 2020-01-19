@@ -7,7 +7,7 @@
 <html>
 
 <head>
-	<title>List Date Range</title>
+	<title>List Limit</title>
 	
 	<!-- reference our style sheet -->
 
@@ -89,7 +89,7 @@
 			
 				<!-- put new button: Add Student -->
 			
-				<input type="button" value="Add Date Range"
+				<input type="button" value="Add Limit"
 					   onclick="window.location.href='showFormForAdd'; return false;"
 					   class="add-button"
 				/>
@@ -99,12 +99,12 @@
 		
 			<!--  add our html table here -->
 		
-			<table id="daterangeTable" class="table table-striped table-bordered">
+			<table id="studentsTable" class="table table-striped table-bordered">
 				<thead>
 				<tr>
-					
-					<th>Start Date</th>
-					<th>End Date</th>
+					<th>id</th>
+					<th>Department Id</th>
+					<th>Application Limit</th>
 					<th> Year</th>
 	
 					
@@ -119,23 +119,27 @@
 				<thead>
 				<tbody>
 					<!-- loop over and print our students -->
-					<c:forEach var="tempDaterange" items="${applicationDateRange}">
+					<c:forEach var="tempDaterange" items="${students}">
 					
 						<!-- construct an "update" link with student id -->
-						<c:url var="updateLink" value="/daterange/showFormForUpdate">
-							<c:param name="daterangeId" value="${tempDateRange.id}" />
+						<c:url var="updateLink" value="/student/showFormForUpdate">
+							<c:param name="studentId" value="${tempStudent.id}" />
 						</c:url>					
 	
 						<!-- construct an "delete" link with student id -->
-						<c:url var="deleteLink" value="/daterange/delete">
-							<c:param name="daterangeId" value="${tempStudent.id}" />
+						<c:url var="deleteLink" value="/student/delete">
+							<c:param name="studentId" value="${tempStudent.id}" />
 						</c:url>		
 						
 						<tr>
-						<td> ${tempDaterange.start_date} </td>
-						<td> ${tempStudent.end_date} </td>
-						<td> ${tempStudent.year} </td>
-					
+						<td> ${tempStudent.firstName} </td>
+						<td> ${tempStudent.lastName} </td>
+						<td> ${tempStudent.email} </td>
+						<td> ${tempStudent.phoneNumber} </td>
+						<td> ${tempStudent.department} </td>
+						<td> ${tempStudent.registrationYear} </td>
+						<td> ${tempStudent.semester} </td>
+						
 						
 						
 							<!--  display the update link -->
