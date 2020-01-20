@@ -4,7 +4,7 @@
 <html>
 
 <head>
-	<title>Save User</title>
+	<title>Save Date range</title>
 	
 	<link type="text/css"
 			rel="stylesheet"
@@ -33,59 +33,44 @@
 
 <div id="container">
 <div id="content">
-	<h3>Save User</h3>
+	<h3>Save Date range</h3>
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
-		String action = isUpdate=="0"?"saveUser":"updateUser";
+		String action = isUpdate=="0"?"saveDateRange":"updateDateRange";
 		boolean disabledField = isUpdate=="0"?false:true;
 		
 		String authority = (String)request.getAttribute("authority");
+		
+		String year = new java.text.SimpleDateFormat("yyyy").format(new java.util.Date());
 	%>
 
-	<form:form onsubmit="SubmitForm()" action="<%= action %>" modelAttribute="user" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form onsubmit="SubmitForm()" action="saveDateRange" modelAttribute="applicationDateRange" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
-	<%--<form:hidden path="username" />--%>
+	<form:hidden path="id" />
 	<table>
 		<tbody>
 			<tr>
-				<td><label>Username:</label></td>
-				<td><form:input id="username" path="username" disabled="<%= disabledField %>"/></td>
+				<td><label>Start Date: </label></td>
+				<td><form:input id="start_date" type="date" path="start_date"/></td>
 			</tr>
 			
 			<tr>
-				<td><label>Password:</label></td>
-				<td><form:input id="password" path="password" /></td>
+				<td><label>End Date: </label></td>
+				<td><form:input id="end_date" type="date" path="end_date" /></td>
 			</tr>
 			
 			<tr>
-				<td><label>Enabled:</label></td>
-				<td><form:input id="enabled" path="enabled" style="display:none;" />
-					<label class="switch">
-					  <input form="fakeForm" id="checkboxEnalbed" onchange="EnabledChanged(this);" type="checkbox">
-					  <span class="slider round"></span>
-					</label>
-				</td>
-				
-			</tr>
-			<tr>
-				<td><label>Authority:</label></td>
+				<td><label>Year: </label></td>
 				<td>
-					<select name="authority" id="authority">
-						<option value="ROLE_EMPLOYEE">Employee</option>
-						<option value="ROLE_MANAGER">Manager</option>
-						<option value="ROLE_ADMIN">Admin</option>
-					</select>
-					<script>
-						var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
-						if(isUpdate=="1")
-							document.getElementById("authority").value = "<%= authority %>";
-					</script>
+					<% if(isUpdate=="0"){ %>
+						<form:input id="year" type="number" min="2000" value="<%= year %>" path="year" />
+					<% } else { %>
+						<form:input id="year" type="number" min="2000" path="year" />
+					<% } %>
 				</td>
 			</tr>
-			<tr>
-				<td><label>Department:</label></td>
-				<td><input id="department" name="department" type="number"/></td>
-			</tr>
+			
+			
 			
 			<%-- 
 			<tr>
@@ -131,7 +116,7 @@
 				<td><form:input id="score" path="score" /></td>
 			</tr> --%>
 			
-			<script>
+		<!-- 	<script>
 			
 			
 				function EnabledChanged(element){
@@ -148,30 +133,15 @@
 
 				
 			
-				window.addEventListener('load', function () {
-					var isUpdate = "<%= (String)request.getAttribute("isUpdate") %>";
-					//generate password
-					var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]?";
-					var pwd = "";
-					var length = 12;
-					for (var i = 0, n = chars.length; i < length; ++i) {
-						pwd += chars.charAt(Math.floor(Math.random() * n));
-				    }
-				
-					if(isUpdate=="0"){
-						document.getElementById("username").value="";
-						document.getElementById("password").value = pwd;
-						document.getElementById("enabled").value="0";
-					}
-				
+		
 				});
 				
 				function SubmitForm(){
-					document.getElementById("username").disabled = false;
+					document.getElementById("start_date").disabled = false;
 				}
 				
 			</script>
-			
+			 -->
 			
 			
 			
@@ -192,7 +162,7 @@
 	<div style="clear; both;"> </div>
 	
 	<p>
-		<a href="${pageContext.request.contextPath}/user/list">Back to List</a>
+		<a href="${pageContext.request.contextPath}/daterange/list">Back to List</a>
 	</p>
 	
 </div>	

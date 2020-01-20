@@ -22,4 +22,10 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public Department getUserByUsername(String username) {
 		return departmentDAO.getUserByUsername(username);
 	}
+	
+	@Override
+	@Transactional
+	public void deleteByUsername(String username) {
+		departmentDAO.deleteByUsername(username);
+	}
 }

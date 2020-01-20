@@ -38,8 +38,10 @@ import com.student.springdemo.dao.DepartmentDAO;
 import com.student.springdemo.dao.UserDAO;
 import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.CrmUser;
+import com.student.springdemo.entity.DateRange;
 import com.student.springdemo.entity.Student;
 import com.student.springdemo.service.ApplicationService;
+import com.student.springdemo.service.DateRangeService;
 import com.student.springdemo.service.LimitService;
 import com.student.springdemo.service.StudentService;
 import com.student.springdemo.service.UserService;
@@ -60,10 +62,12 @@ public class ApiController {
 	@Autowired
 	ApplicationService applicationService;
 	
+	@Autowired
+	DateRangeService dateRangeService;
+	
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 						
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
 	public @ResponseBody String checkCredentials(HttpServletRequest req, @RequestParam("username") String username, @RequestParam String password) throws FileNotFoundException, IOException {
 		//Check credentials
@@ -89,23 +93,77 @@ public class ApiController {
         }
 	}
 	
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/api/submitApplication", method = RequestMethod.POST)
-	public @ResponseBody String submitApplication(HttpServletRequest req, @RequestParam("username") String username, @RequestParam("studentIncome") int studentIncome, @RequestParam("parents") int parents, @RequestParam("familyIncome") int familyIncome, @RequestParam("siblings") int siblings, @RequestParam("fromAnotherCity") int fromAnotherCity, @RequestParam("years") int years, @RequestParam("year") int year)  {
+	public @ResponseBody String submitApplication(HttpServletRequest req, @RequestParam("username") String username, @RequestParam("studentIncome") int studentIncome, @RequestParam("parents") int parents, @RequestParam("familyIncome") int familyIncome, @RequestParam("siblings") int siblings, @RequestParam("fromAnotherCity") int fromAnotherCity, @RequestParam("years") int years, @RequestParam("year") int year, @RequestParam("fileUrl") String fileUrl)  {
 
 		try {
-			Session session = sessionFactory.getCurrentSession();
+			int currentYear = Integer.valueOf(new java.text.SimpleDateFormat("yyyy").format(new java.util.Date()));
 			
-			Student student = studentService.getStudentByUsername(username);
+			String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
 			
-			Application application = new Application(0, student.getId(), studentIncome, familyIncome, parents, siblings, fromAnotherCity, 0, 0, year);
+			DateRange currentDateRange = null;
+			List<DateRange> dateRanges = dateRangeService.getDateRange();
+			for(int i = 0; i<dateRanges.size(); i++) {
+				if(dateRanges.get(i).getYear() == currentYear) {
+					currentDateRange = dateRanges.get(i);
+					break;
+				}
+			}
 			
-			session.save(application);
+			if(currentDate.compareTo(currentDateRange.getStart_date()) >= 0 && currentDate.compareTo(currentDateRange.getEnd_date()) <= 0) {
+				
+				Student student = studentService.getStudentByUsername(username);
+				
+				Application application = new Application(0, student.getId(), studentIncome, familyIncome, parents, siblings, fromAnotherCity, 0, 0, year, 0, fileUrl);
+								
+				if(hasSubmitted(username)) {
+					return "hasSubmitted";
+				}
+				else {
+					Session session = sessionFactory.getCurrentSession();
+					session.save(application);
+				}
+				
+			}
+			else {
+				return "-1";
+			}
+			
 		}
 		catch(Exception e) {
 			return "0";
 		}
 		return "1";
+	}
+	
+	@RequestMapping(value = "/api/isInSubmissionPeriod", method = RequestMethod.POST)
+	public @ResponseBody String isInSubmissionPeriod(HttpServletRequest req)  {
+
+		try {
+			int currentYear = Integer.valueOf(new java.text.SimpleDateFormat("yyyy").format(new java.util.Date()));
+			
+			String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+			
+			DateRange currentDateRange = null;
+			List<DateRange> dateRanges = dateRangeService.getDateRange();
+			for(int i = 0; i<dateRanges.size(); i++) {
+				if(dateRanges.get(i).getYear() == currentYear) {
+					currentDateRange = dateRanges.get(i);
+					break;
+				}
+			}
+			
+			if(currentDate.compareTo(currentDateRange.getStart_date()) >= 0 && currentDate.compareTo(currentDateRange.getEnd_date()) <= 0) {
+				return "1";
+			}
+			else {
+				return "0";
+			}
+			
+		}
+		catch(Exception e) {
+			return "-1";
+		}
 	}
 	
 	@RequestMapping(value = "/api/generateStudents", method = RequestMethod.GET)
@@ -199,5 +257,70 @@ public class ApiController {
 		return data;
 	}
 	
+	@RequestMapping(value = "/api/submitEditProfile", method = RequestMethod.POST)
+	public @ResponseBody String submitEditProfile(HttpServletRequest req, @RequestParam("username") String username, @RequestParam("first_name") String first_name, @RequestParam("last_name") String last_name, @RequestParam("phone_number") String phone_number, @RequestParam("password") String password)  {
+
+		try {
+			Student student = studentService.getStudentByUsername(username);
+			
+			if(first_name != "") {
+				student.setFirstName(first_name);
+			}
+			if(last_name != "") {
+				student.setLastName(last_name);
+			}
+			if(phone_number != "") {
+				student.setPhoneNumber(phone_number);
+			}
+			if(password != "") {
+				student.setPassword("{bcrypt}" + passwordEncoder.encode(password));
+			}
+			
+			studentService.saveStudent(student);
+		}
+		catch(Exception e) {
+			return "0";
+		}
+		return "1";
+	}
+	
+	@RequestMapping(value = "/api/hasSubmitted", method = RequestMethod.POST)
+	public @ResponseBody String hasSubmitted(HttpServletRequest req, @RequestParam("username") String username)  {
+
+		try {			
+			if(hasSubmitted(username)) {
+				return getSubmittedForm(username);
+			}
+			else {
+				return "0";
+			}
+			
+		}
+		catch(Exception e) {
+			return "-1";
+		}
+	}
+	
+	private boolean hasSubmitted(String username) {
+		Student student = studentService.getStudentByUsername(username);
+		int studentId = student.getId();
+		
+		if(applicationService.getApplicationByStudentId(studentId) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	private String getSubmittedForm(String username) {
+		Student student = studentService.getStudentByUsername(username);
+		int studentId = student.getId();
+		Application application = applicationService.getApplicationByStudentId(studentId);
+		
+		String data = "{\"family_income\":\""+application.getFamily_income()+"\",\"studying_siblings\":\""+application.getStudying_siblings()+"\",\"student_income\":\""+application.getStudent_income()+"\",\"unemployeed_parents\":\""+application.getUnemployeed_parents()+"\",\"is_from_another_city\":\""+application.getIs_from_another_city()+"\"}";
+		
+		return data;
+		
+	}
+		
 }
  

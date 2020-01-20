@@ -36,4 +36,16 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 		//return the results
 		return theQuery.getSingleResult();
 	}
+	
+	@Override
+	public void deleteByUsername(String username) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//delete object with primary key
+		Query theQuery = currentSession.createQuery("delete from Department where username=:username");
+		
+		theQuery.setParameter("username", username);
+		theQuery.executeUpdate();
+	}
 }

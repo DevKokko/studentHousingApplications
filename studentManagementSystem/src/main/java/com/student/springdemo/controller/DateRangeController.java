@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.student.springdemo.dao.StudentDAO;
+import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.DateRange;
 import com.student.springdemo.entity.Student;
 import com.student.springdemo.service.StudentService;
@@ -34,7 +35,7 @@ public class DateRangeController {
 
 	
 	@GetMapping("/list")
-	public String listStudents(Model theModel) {
+	public String listDateRange(Model theModel) {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -44,25 +45,35 @@ public class DateRangeController {
 		
 		theDateRange = dateRangeService.getDateRange();
 		//add the students to the model
-		theModel.addAttribute("dateRange" , theDateRange);
+		theModel.addAttribute("applicationDateRange" , theDateRange);
 						
 		return "list-daterange";
 		
 	}
 	
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model theModel) {
+		
+		//create model attribute to bind form data
+		DateRange theDateRange = new DateRange();
+		
+		theModel.addAttribute("applicationDateRange",theDateRange);
+		theModel.addAttribute("isUpdate", "0");
+		
+		return "daterange-form";
+	}
+
 	
 	
 
 
 	@PostMapping("/saveDateRange")
-	public String saveStudent(@ModelAttribute("applicationDateRange") DateRange theDateRange) {
-		
-	
-		
+	public String saveDateRange(@ModelAttribute("applicationDateRange") DateRange theDateRange) {
 		dateRangeService.saveDateRange(theDateRange);
 		
 		return "redirect:/daterange/list";
 	}
+	
 	
 
 	

@@ -52,6 +52,20 @@ public class LimitController {
 		
 	}
 	
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model theModel) {
+		
+		//create model attribute to bind form data
+		Limit theLimit = new Limit();
+		
+		theModel.addAttribute("applicationLimit",theLimit);
+		theModel.addAttribute("isUpdate", "0");
+		
+		return "limit-form";
+	}
+
+	
+	
 	
 	
 

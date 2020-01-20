@@ -33,6 +33,7 @@ import com.student.springdemo.dao.StudentDAO;
 import com.student.springdemo.entity.Application;
 import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.CrmUserAuthority;
+import com.student.springdemo.entity.Department;
 import com.student.springdemo.entity.Student;
 import com.student.springdemo.service.StudentService;
 import com.student.springdemo.service.UserService;
@@ -104,6 +105,7 @@ public class UserController {
 	@PostMapping("/saveUser")
 	public String saveUser(@Valid @ModelAttribute("user") CrmUser theCrmUser, 
 			@RequestParam("authority") String authority,
+			@RequestParam("department") int dep,
 			BindingResult theBindingResult, 
 			Model theModel) {
 		
@@ -132,6 +134,11 @@ public class UserController {
         // save user in the database
         userDetailsManager.createUser(tempUser);
         
+        
+        Department department = new Department(theCrmUser.getUsername(), dep);
+        
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.save(department);
 		
 		return "redirect:/user/list";
 	}

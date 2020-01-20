@@ -40,7 +40,8 @@
 <c:url value="user/list" var="userUrl"/>
 <c:url value="student/list" var="studentUrl"/>
 <c:url value="application/list" var="applicationUrl"/>
-
+<c:url value="daterange/list" var="daterangeUrl"/>
+<c:url value="limit/list" var="limitUrl"/>
 
 <head>
 	<title>List of actions: </title>
@@ -136,7 +137,10 @@
 						  		<li class="list-group-item"><a href="${studentUrl}">Student's List</a></li>
 						
 						  		<li class="list-group-item"><a href="${applicationUrl}">Application's List</a></li>							
-					
+								<li class="list-group-item"><a href="${daterangeUrl}">Date range List</a></li>
+								<li class="list-group-item"><a href="${limitUrl}">Limit's List</a></li>							
+															
+								
 						</ul>
 				
     

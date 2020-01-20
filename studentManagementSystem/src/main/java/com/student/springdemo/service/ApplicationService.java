@@ -18,4 +18,5 @@ public interface ApplicationService {
 	public List<Application> getApplications();
 	public List getApplicationsByDep(int dep);
 	public int howManyYearsFreeHousing(int theId);
+	public String fileUrl(String url);
 }

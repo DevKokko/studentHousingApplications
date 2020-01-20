@@ -59,4 +59,10 @@ public class ApplicationServiceImpl implements ApplicationService{
 	public int howManyYearsFreeHousing(int theId) {
 		return applicationDAO.howManyYearsFreeHousing(theId);
 	}
+
+	@Override
+	public String fileUrl(String url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -6,11 +6,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.student.springdemo.entity.CrmUser;
 import com.student.springdemo.entity.Student;
+import com.student.springdemo.service.DepartmentService;
 
 @Repository
 @Transactional
@@ -19,6 +22,12 @@ public class UserDAOImpl implements UserDAO {
 	//need to inject the session factory
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private UserDetailsManager userDetailsManager;
+	
+	@Autowired
+	private DepartmentService departmentService;
 
 	@Override
 	public List<CrmUser> getUsers() {
@@ -73,10 +82,13 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void deleteUser(CrmUser user) {
 		
-		Session currentSession = sessionFactory.getCurrentSession();
+	//	Session currentSession = sessionFactory.getCurrentSession();
+				
+		userDetailsManager.deleteUser(user.getUsername());
+		departmentService.deleteByUsername(user.getUsername());
 		
 		//save/update the student
-		currentSession.delete(user);
+		//currentSession.delete(user);
 		
 		//get the current hibernate session
 			/*	Session currentSession = sessionFactory.getCurrentSession();

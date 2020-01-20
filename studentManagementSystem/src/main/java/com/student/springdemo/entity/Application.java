@@ -46,7 +46,9 @@ public class Application implements Comparable<Application> {
 	
 	@Column(name="gotFreeHousing")
 	private int gotFreeHousing;
-
+	
+	@Column(name="fileUrl")
+	private String fileUrl;
 	
 	
 	public int getGotFreeHousing() {
@@ -181,8 +183,23 @@ public class Application implements Comparable<Application> {
 
 
 
+	
+
+	public String getFileUrl() {
+		return fileUrl;
+	}
+
+
+
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
+
+	
+
 	public Application(int id, int student_id, int student_income, int family_income, int unemployeed_parents,
-			int studying_siblings, int is_from_another_city, int score, int approved, int year) {
+			int studying_siblings, int is_from_another_city, int score, int approved, int year, int gotFreeHousing,
+			String fileUrl) {
 		this.id = id;
 		this.student_id = student_id;
 		this.student_income = student_income;
@@ -193,7 +210,10 @@ public class Application implements Comparable<Application> {
 		this.score = score;
 		this.approved = approved;
 		this.year = year;
+		this.gotFreeHousing = gotFreeHousing;
+		this.fileUrl = fileUrl;
 	}
+
 
 
 	public Application(){}

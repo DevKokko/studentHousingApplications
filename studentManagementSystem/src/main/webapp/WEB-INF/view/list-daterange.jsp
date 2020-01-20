@@ -56,11 +56,7 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>-->
-      <li>
-	      <security:authorize access="hasAnyRole('ADMIN')">
-	      	<a class="nav-link" href="${pageContext.request.contextPath}/register/showRegistrationForm" ">Register User</a>
-	      </security:authorize>
-      </li>
+    
     </ul>
       <form:form action="${pageContext.request.contextPath}/logout" 
 			   method="POST">
@@ -123,18 +119,18 @@
 					
 						<!-- construct an "update" link with student id -->
 						<c:url var="updateLink" value="/daterange/showFormForUpdate">
-							<c:param name="daterangeId" value="${tempDateRange.id}" />
+							<c:param name="dateRangeId" value="${tempDaterange.id}" />
 						</c:url>					
 	
 						<!-- construct an "delete" link with student id -->
 						<c:url var="deleteLink" value="/daterange/delete">
-							<c:param name="daterangeId" value="${tempStudent.id}" />
+							<c:param name="dateRangeId" value="${tempDaterange.id}" />
 						</c:url>		
 						
 						<tr>
 						<td> ${tempDaterange.start_date} </td>
-						<td> ${tempStudent.end_date} </td>
-						<td> ${tempStudent.year} </td>
+						<td> ${tempDaterange.end_date} </td>
+						<td> ${tempDaterange.year} </td>
 					
 						
 						

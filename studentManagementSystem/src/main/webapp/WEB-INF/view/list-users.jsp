@@ -60,11 +60,7 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>-->
-      <li>
-	      <security:authorize access="hasAnyRole('ADMIN')">
-	      	<a class="nav-link" href="${pageContext.request.contextPath}/register/showRegistrationForm" ">Register User</a>
-	      </security:authorize>
-      </li>
+    
     </ul>
       <form:form action="${pageContext.request.contextPath}/logout" 
 			   method="POST">

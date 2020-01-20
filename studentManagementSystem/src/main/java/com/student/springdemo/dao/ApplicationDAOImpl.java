@@ -43,8 +43,13 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 		theQuery.setParameter("id", id);
 		theQuery.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
 		
-		//return the results
-		return theQuery.getSingleResult();
+		if(theQuery.getResultList().size()>0) {
+			return theQuery.getResultList().get(0);
+		}
+		else {
+			return null;
+		}
+				
 	}
 
 	@Override
@@ -157,5 +162,11 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 				theQuery.setParameter("applicationId", theId);
 				theQuery.executeUpdate();
 		
+	}
+
+	@Override
+	public String fileUrl(String url) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

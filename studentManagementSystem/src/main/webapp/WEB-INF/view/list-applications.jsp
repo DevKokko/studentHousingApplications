@@ -56,11 +56,7 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>-->
-      <li>
-	      <security:authorize access="hasAnyRole('ADMIN')">
-	      	<a class="nav-link" href="${pageContext.request.contextPath}/register/showRegistrationForm" ">Register User</a>
-	      </security:authorize>
-      </li>
+  
     </ul>
       <form:form action="${pageContext.request.contextPath}/logout" 
 			   method="POST">
@@ -98,6 +94,8 @@
 					<th>Score </th>
 					<th>Approved</th>
 					<th>Year</th>
+					<th>File Url</th>
+					
 					
 					<%-- Only show "Action" column for managers or admin --%>
 					<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
@@ -180,6 +178,7 @@
 							</c:choose>
 						</td>
 						<td> ${tempApplication.year} </td>
+						<td> <a href="http://project2-group4.alwaysdata.net/api/${tempApplication.fileUrl}" target="_blank">File</a> </td>
 						
 						
 						
