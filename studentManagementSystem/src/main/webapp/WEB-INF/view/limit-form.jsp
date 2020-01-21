@@ -6,6 +6,7 @@
 <head>
 	<title>Save Date range</title>
 	
+	
 	<link type="text/css"
 			rel="stylesheet"
 			href="${pageContext.request.contextPath}/resources/css/style.css">
@@ -35,7 +36,7 @@
 <div id="content">
 	<h3>Save Date range</h3>
 	<% String isUpdate = (String)request.getAttribute("isUpdate"); 
-		String action = isUpdate=="0"?"saveDateRange":"updateDateRange";
+		String action = isUpdate=="0"?"saveLimit":"updateLimit";
 		boolean disabledField = isUpdate=="0"?false:true;
 		
 		String authority = (String)request.getAttribute("authority");
@@ -43,7 +44,7 @@
 		String year = new java.text.SimpleDateFormat("yyyy").format(new java.util.Date());
 	%>
 
-	<form:form onsubmit="SubmitForm()" action="saveLimit" modelAttribute="applicationLimit" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
+	<form:form onsubmit="SubmitForm()" action="<%= action %>" modelAttribute="applicationLimit" method="POST" style="padding: 25px 50px;background-color: white;border-radius: 10px;" >
 	
 	<!-- need to associate this data with the given student id -->
 	<form:hidden path="id" />
@@ -51,7 +52,7 @@
 		<tbody>
 			<tr>
 				<td><label>Department id: </label></td>
-				<td><form:input id="department_id" min="1" max="3" type="number" path="department_id"/></td>
+				<td><form:input disabled="<%= disabledField %>" id="department_id" min="1" max="3" type="number" path="department_id"/></td>
 			</tr>
 			
 			<tr>
@@ -116,32 +117,14 @@
 				<td><form:input id="score" path="score" /></td>
 			</tr> --%>
 			
-		<!-- 	<script>
-			
-			
-				function EnabledChanged(element){
-					if(element.checked){
-						document.getElementById("enabled").value = "1";
-					}
-					else
-						document.getElementById("enabled").value = "0";
-				}
-				if(document.getElementById("enabled").value == "1")
-					document.getElementById("checkboxEnalbed").checked = true;
-				else
-					document.getElementById("checkboxEnalbed").checked = false;
-
-				
-			
-		
-				});
-				
+		 	<script>
+							
 				function SubmitForm(){
-					document.getElementById("start_date").disabled = false;
+					document.getElementById("department_id").disabled = false;
 				}
 				
 			</script>
-			 -->
+			 
 			
 			
 			

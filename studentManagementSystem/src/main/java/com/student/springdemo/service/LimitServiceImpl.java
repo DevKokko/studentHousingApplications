@@ -42,9 +42,13 @@ public class LimitServiceImpl implements LimitService{
 
 	@Override
 	@Transactional
-	public void saveLimit(Limit theId) {
-		limitDAO.saveLimit(theId);
-		
+	public int saveLimit(Limit limit) {
+		return limitDAO.saveLimit(limit);
+	}
+	@Override
+	@Transactional
+	public void updateLimit(Limit limit) {
+		limitDAO.updateLimit(limit);
 	}
 
 

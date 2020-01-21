@@ -71,11 +71,18 @@ public class LimitController {
 
 
 	@PostMapping("/saveLimit")
-	public String saveStudent(@ModelAttribute("applicationLimit") Limit theLimit) {
+	public String saveLimit(@ModelAttribute("applicationLimit") Limit theLimit) {
 		
 	
 		
-		limitService.saveLimit(theLimit);
+		int alreadyExists = limitService.saveLimit(theLimit);
+		
+		return "redirect:/limit/list?alreadyExists="+alreadyExists;
+	}
+	@PostMapping("/updateLimit")
+	public String updateLimit(@ModelAttribute("applicationLimit") Limit theLimit) {
+		
+		limitService.updateLimit(theLimit);
 		
 		return "redirect:/limit/list";
 	}

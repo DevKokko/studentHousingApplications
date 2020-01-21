@@ -15,12 +15,17 @@ import com.student.springdemo.entity.DateRange;
 import com.student.springdemo.entity.Department;
 import com.student.springdemo.entity.Limit;
 import com.student.springdemo.entity.Student;
+import com.student.springdemo.service.DepartmentService;
+import com.student.springdemo.service.LimitService;
 
 @Repository
 @Transactional
 public class LimitDAOImpl implements LimitDAO{
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private LimitService limitService;
 
 	@Override
 	public Limit getLimitByDepartmentId(int theid) {
@@ -61,12 +66,31 @@ public class LimitDAOImpl implements LimitDAO{
 
 
 	@Override
-	public void saveLimit(Limit theId) {
+	public int saveLimit(Limit limit) {
+		
+		List<Limit> limits = limitService.getLimit();
+		
+		
+		for(int i = 0; i<limits.size(); i++) {
+			if(limits.get(i).getDepartment_id() == limit.getDepartment_id() && limits.get(i).getYear() == limit.getYear()) {
+				return 1;
+			}
+		}
 		//get current hibernate session
-				Session currentSession = sessionFactory.getCurrentSession();
-				
-				//save/update the student
-				currentSession.saveOrUpdate(theId);
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//save/update the student
+		currentSession.saveOrUpdate(limit);
+		return 0;
+	}
+	@Override
+	public void updateLimit(Limit limit) {
+		
+		//get current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//save/update the student
+		currentSession.saveOrUpdate(limit);
 	}
 
 	@Override

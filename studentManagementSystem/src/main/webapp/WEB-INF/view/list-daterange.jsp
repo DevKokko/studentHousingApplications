@@ -6,6 +6,12 @@
 
 <html>
 
+<c:url value="../user/list" var="userUrl"/>
+<c:url value="../student/list" var="studentUrl"/>
+<c:url value="../application/list" var="applicationUrl"/>
+<c:url value="../daterange/list" var="daterangeUrl"/>
+<c:url value="../limit/list" var="limitUrl"/>
+
 <head>
 	<title>List Date Range</title>
 	
@@ -15,6 +21,8 @@
 		  rel="stylesheet"
 		  href="${pageContext.request.contextPath}/resources/css/style.css" />
 		  
+		  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		  
 		  <!-- Reference Bootstrap files -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -22,7 +30,7 @@
 	
 	<script src="https://kit.fontawesome.com/6626873403.js" crossorigin="anonymous"></script>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"></link>
 </head>
@@ -38,6 +46,20 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/spring-crm-with-security">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="${userUrl}">User's List</a>
+          <a class="dropdown-item" href="${studentUrl}">Student's List</a>
+          <a class="dropdown-item" href="${applicationUrl}">Application's List</a>
+          <a class="dropdown-item" href="${daterangeUrl}">Date Range List</a>
+          <a class="dropdown-item" href="${limitUrl}">Limit's List</a>
+          <!--<div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>-->
+        </div>
       </li>
     <!--   <li class="nav-item">
         <a class="nav-link" href="#">Link</a>

@@ -12,9 +12,9 @@ public interface LimitService {
 	public Limit getLimitByDepartmentId(int theId);
 	public Limit getLimitById(int theId);
 
-	public void saveLimit(Limit theLimit);
+	public int saveLimit(Limit limit);
 
-	
+	public void updateLimit(Limit limit);
 
 	public void deleteLimit(int theId);
 }
