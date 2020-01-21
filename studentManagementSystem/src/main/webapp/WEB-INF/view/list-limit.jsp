@@ -68,7 +68,7 @@
 	
 	<div id="wrapper">
 		<div id="header">
-			<h2>List date range : </h2>
+			<h2>List limit : </h2>
 		</div>
 	</div>
 	
@@ -95,10 +95,10 @@
 		
 			<!--  add our html table here -->
 		
-			<table id="studentsTable" class="table table-striped table-bordered">
+			<table id="limitTable" class="table table-striped table-bordered">
 				<thead>
 				<tr>
-					<th>id</th>
+			
 					<th>Department Id</th>
 					<th>Application Limit</th>
 					<th> Year</th>
@@ -115,26 +115,23 @@
 				<thead>
 				<tbody>
 					<!-- loop over and print our students -->
-					<c:forEach var="tempDaterange" items="${students}">
+					<c:forEach var="tempApplicationLimit" items="${applicationLimit}">
 					
 						<!-- construct an "update" link with student id -->
-						<c:url var="updateLink" value="/student/showFormForUpdate">
-							<c:param name="studentId" value="${tempStudent.id}" />
+						<c:url var="updateLink" value="/limit/showFormForUpdate">
+							<c:param name="limitId" value="${tempLimit.id}" />
 						</c:url>					
 	
 						<!-- construct an "delete" link with student id -->
-						<c:url var="deleteLink" value="/student/delete">
-							<c:param name="studentId" value="${tempStudent.id}" />
+						<c:url var="deleteLink" value="/limit/delete">
+							<c:param name="limitId" value="${tempLimit.id}" />
 						</c:url>		
 						
 						<tr>
-						<td> ${tempStudent.firstName} </td>
-						<td> ${tempStudent.lastName} </td>
-						<td> ${tempStudent.email} </td>
-						<td> ${tempStudent.phoneNumber} </td>
-						<td> ${tempStudent.department} </td>
-						<td> ${tempStudent.registrationYear} </td>
-						<td> ${tempStudent.semester} </td>
+						<td> ${tempLimit.department_id} </td>
+						<td> ${tempLimit.application_limit} </td>
+						<td> ${tempLimit.year} </td>
+					
 						
 						
 						
@@ -150,7 +147,7 @@
 		
 									<security:authorize access="hasAnyRole('ADMIN')">
 										<a href="${deleteLink}"
-										   onclick="if (!(confirm('Are you sure you want to delete this student?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
+										   onclick="if (!(confirm('Are you sure you want to delete this limit?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
 									</security:authorize>
 								</td>
 	

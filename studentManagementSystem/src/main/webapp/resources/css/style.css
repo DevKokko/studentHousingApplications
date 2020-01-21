@@ -43,7 +43,7 @@ tr:nth-child(odd) {background: #BBBBBB}
 }
 #content {
 	margin: 0 auto;
-	width: fit-content;
+	width: max-content;
 }
 
 #loginbox{

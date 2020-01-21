@@ -36,7 +36,7 @@ public class LimitController {
 
 	
 	@GetMapping("/list")
-	public String listStudents(Model theModel) {
+	public String listLimit(Model theModel) {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
