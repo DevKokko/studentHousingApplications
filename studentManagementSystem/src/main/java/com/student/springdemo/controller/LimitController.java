@@ -46,7 +46,7 @@ public class LimitController {
 		
 		theLimit = limitService.getLimit();
 		//add the students to the model
-		theModel.addAttribute("limit" , theLimit);
+		theModel.addAttribute("applicationLimit" , theLimit);
 						
 		return "list-limit";
 		

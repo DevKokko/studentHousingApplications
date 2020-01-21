@@ -115,7 +115,7 @@
 				<thead>
 				<tbody>
 					<!-- loop over and print our students -->
-					<c:forEach var="tempApplicationLimit" items="${applicationLimit}">
+					<c:forEach var="tempLimit" items="${applicationLimit}">
 					
 						<!-- construct an "update" link with student id -->
 						<c:url var="updateLink" value="/limit/showFormForUpdate">

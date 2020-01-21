@@ -131,7 +131,7 @@
 						<ul class="list-group">
 						
 							
-						  		<li class="list-group-item"><a href="${userUrl}">User's List</a></li>
+						  		<li class="list-group-item "><a href="${userUrl}">User's List</a></li>
 						  		
 						  	
 						  		<li class="list-group-item"><a href="${studentUrl}">Student's List</a></li>
