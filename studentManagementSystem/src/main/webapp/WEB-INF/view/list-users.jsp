@@ -107,7 +107,7 @@
 			</p>
 		
 
-			<security:authorize access="hasAnyRole('MANAGER', 'ADMIN')">
+			<security:authorize access="hasAnyRole( 'ADMIN')">
 			
 				<!-- put new button: Add Student -->
 			
@@ -131,7 +131,7 @@
 	
 					
 					<%-- Only show "Action" column for managers or admin --%>
-					<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+					<security:authorize access="hasAnyRole('ADMIN')">
 					
 						<th>Action</th>
 					
@@ -162,10 +162,10 @@
 						
 							<!--  display the update link -->
 						
-							<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+							<security:authorize access="hasAnyRole( 'ADMIN')">
 							
 								<td>
-									<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+									<security:authorize access="hasAnyRole('ADMIN')">
 										<!-- display the update link -->
 										<a href="${updateLink}"><i class="fas fa-user-edit" style="color:orange;"></i></a>
 									</security:authorize>
@@ -196,15 +196,15 @@
 			alert("A user with that username already exists");
 		}
 	</script>
-		<!-- <script>
+		 <script>
 		$(document).ready( function () {
-		    $('#studentsTable').DataTable({
+		    $('#usersTable').DataTable({
 		    		dom: 'Bflrtip',
-		    		"order": [[7,'DESC']]
+		    		"order": [[1,'DESC']]
 		    });
 		    
 		} );
-		</script> -->
+		</script>
 </body>
 
 </html>

@@ -159,15 +159,15 @@
 						
 							<!--  display the update link -->
 						
-							<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+							<security:authorize access="hasAnyRole('MANAGER', 'EMPLOYEE')">
 							
 								<td>
-									<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+									<security:authorize access="hasAnyRole('MANAGER', 'EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${updateLink}"><i class="fas fa-user-edit" style="color:orange;"></i></a>
 									</security:authorize>
 		
-									<security:authorize access="hasAnyRole('ADMIN')">
+									<security:authorize access="hasAnyRole('MANAGER')">
 										<a href="${deleteLink}"
 										   onclick="if (!(confirm('Are you sure you want to delete this limit?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
 									</security:authorize>
@@ -189,10 +189,10 @@
 	<p></p>
 		<script>
 		$(document).ready( function () {
-		    $('#studentsTable').DataTable({
+		    $('#limitTable').DataTable({
 		    		dom: 'Bflrtip',
-		    		"order": [[7,'DESC']]
-		    });
+		    		"order": [[1,'ASC']]
+		    }); 
 		    
 		} );
 		var alreadyExists = "<%= request.getParameter("alreadyExists") %>";

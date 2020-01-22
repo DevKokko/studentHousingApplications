@@ -103,7 +103,7 @@
 			</p>
 		
 
-			<security:authorize access="hasAnyRole('MANAGER', 'ADMIN')">
+			<security:authorize access="hasAnyRole('MANAGER')">
 			
 				<!-- put new button: Add Student -->
 			
@@ -130,7 +130,7 @@
 	
 					
 					<%-- Only show "Action" column for managers or admin --%>
-					<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+					<security:authorize access="hasAnyRole('MANAGER', 'EMPLOYEE')">
 					
 						<th>Action</th>
 					
@@ -165,15 +165,15 @@
 						
 							<!--  display the update link -->
 						
-							<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+							<security:authorize access="hasAnyRole('MANAGER','EMPLOYEE')">
 							
 								<td>
-									<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
+									<security:authorize access="hasAnyRole('MANAGER', 'EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${updateLink}"><i class="fas fa-user-edit" style="color:orange;"></i></a>
 									</security:authorize>
 		
-									<security:authorize access="hasAnyRole('ADMIN')">
+									<security:authorize access="hasAnyRole('MANAGER')">
 										<a href="${deleteLink}"
 										   onclick="if (!(confirm('Are you sure you want to delete this student?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
 									</security:authorize>

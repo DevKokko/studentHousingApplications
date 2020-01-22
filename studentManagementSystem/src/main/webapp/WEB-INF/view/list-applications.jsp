@@ -209,24 +209,24 @@
 							<security:authorize access="hasAnyRole('MANAGER', 'ADMIN', 'EMPLOYEE')">
 							
 								<td>
-									<security:authorize access="hasAnyRole('ADMIN')">
+									<security:authorize access="hasAnyRole('MANAGER')">
 										<!-- display the update link -->
 										<a href="${updateLink}"><i class="fas fa-user-edit" style="color:orange;"></i></a>
 									</security:authorize>
 		
-									<security:authorize access="hasAnyRole('ADMIN')">
+									<security:authorize access="hasAnyRole('MANAGER')">
 										<a href="${deleteLink}"
 										   onclick="if (!(confirm('Are you sure you want to delete this application?'))) return false"><i class="fas fa-user-times" style="color: red;"></i></a>
 									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
+									<security:authorize access="hasAnyRole('EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${approveLink}"><i class="fa fa-check-circle" style="color:green;"></i></a>
 									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
+									<security:authorize access="hasAnyRole('EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${pendingLink}"><i class="fa fa-clock-o" aria-hidden="true" style="color:darkgoldenrod;"></i></a>
 									</security:authorize>
-									<security:authorize access="hasAnyRole('ADMIN, EMPLOYEE')">
+									<security:authorize access="hasAnyRole('EMPLOYEE')">
 										<!-- display the update link -->
 										<a href="${rejectLink}"><i class="fa fa-times-circle" style="color:red"></i></a>
 									</security:authorize>
