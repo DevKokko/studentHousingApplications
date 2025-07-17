@@ -45,10 +45,10 @@ public class ApplicationController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		List theApplications = null;
+		List<Application> theApplications = null;
 		List<Student> theStudents = null;
 		
-		List<Application> finalApplications = new ArrayList<Application>();
+		List<Application> finalApplications = new ArrayList<>();
 		
 	/*	if(departmentService.getUserByUsername(username).getDepartment() != 0) {
 			theApplications = applicationService.getApplicationsByDep(departmentService.getUserByUsername(username).getDepartment());
@@ -61,10 +61,12 @@ public class ApplicationController {
 		
 		theStudents = studentService.getStudents();
 		
-		for(int i = 0; i<theApplications.size(); i++) {
-			if((((Student)findStudentById(theStudents,((Application)theApplications.get(i)).getStudent_id())).getDepartment() == departmentService.getUserByUsername(username).getDepartment()) || departmentService.getUserByUsername(username).getDepartment() == 0){
-				if(((Application)theApplications.get(i)).getGotFreeHousing() == 0)
-					finalApplications.add((Application)theApplications.get(i));
+		for(Application application : theApplications) {
+			Student student = findStudentById(theStudents, application.getStudent_id());
+			if(student != null && (student.getDepartment() == departmentService.getUserByUsername(username).getDepartment() || departmentService.getUserByUsername(username).getDepartment() == 0)){
+				if(application.getGotFreeHousing() == 0) {
+					finalApplications.add(application);
+				}
 			}
 		}
 		
@@ -77,9 +79,9 @@ public class ApplicationController {
 	}
 	
 	private Student findStudentById(List<Student> students, int id) {
-		for(int j = 0; j<students.size(); j++) {
-			if(((Student)students.get(j)).getId() == id){
-				return ((Student)students.get(j));
+		for(Student student : students) {
+			if(student.getId() == id){
+				return student;
 			}
 		}
 		return null;
@@ -156,37 +158,52 @@ public class ApplicationController {
 		Application application = applicationService.getApplication(theId);
 		
 		application.setApproved(1);
-		application.setScore(CalculateScore(application));
+		application.setScore(calculateScore(application));
 		
 		applicationService.saveApplication(application);
 		
 		return "redirect:/application/list";
 	}
 	
-	private int CalculateScore(Application application) {
+	private int calculateScore(Application application) {
+		// Constants for scoring system
+		final int VERY_LOW_INCOME_BONUS = 100;
+		final int LOW_INCOME_BONUS = 30;
+		final int SIBLING_BONUS = 20;
+		final int OUT_OF_CITY_BONUS = 50;
+		final int PREVIOUS_HOUSING_PENALTY = 10;
+		final int HIGH_PRIORITY_SCORE = 1000000;
+		final int INELIGIBLE_SCORE = -1000000;
 		
 		int score = 0;
-				
+		
+		// Income-based scoring
 		if(application.getFamily_income() < 10000){
-			score+=100;
+			score += VERY_LOW_INCOME_BONUS;
 		}
 		else if(application.getFamily_income() < 15000){
-			score+=30;
+			score += LOW_INCOME_BONUS;
 		}
 		
-		score += application.getStudying_siblings()*20;
+		// Siblings in education bonus
+		score += application.getStudying_siblings() * SIBLING_BONUS;
 		
+		// Out of city bonus
 		if(application.getIs_from_another_city() == 1){
-			score+=50;
+			score += OUT_OF_CITY_BONUS;
 		}
 		
-		score -= applicationService.howManyYearsFreeHousing(application.getStudent_id())*10;
-							
-		if(application.getStudent_income()==1 && application.getUnemployeed_parents()==1){
-			score = 10000000;
+		// Penalty for previous free housing
+		score -= applicationService.howManyYearsFreeHousing(application.getStudent_id()) * PREVIOUS_HOUSING_PENALTY;
+		
+		// High priority: unemployed student with unemployed parents
+		if(application.getStudent_income() == 1 && application.getUnemployeed_parents() == 1){
+			score = HIGH_PRIORITY_SCORE;
 		}
-		if(studentService.getStudent(application.getStudent_id()).getSemester()>8){
-			score = -10000000;
+		
+		// Ineligible: students beyond 8 semesters
+		if(studentService.getStudent(application.getStudent_id()).getSemester() > 8){
+			score = INELIGIBLE_SCORE;
 		}
 		
 		return score;

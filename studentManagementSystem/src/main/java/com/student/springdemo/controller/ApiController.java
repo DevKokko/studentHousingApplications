@@ -70,9 +70,13 @@ public class ApiController {
 						
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
 	public @ResponseBody String checkCredentials(HttpServletRequest req, @RequestParam("username") String username, @RequestParam String password) throws FileNotFoundException, IOException {
-		//Check credentials
-
-		Student student = studentService.getStudentByUsername(username);
+		// Basic input validation
+		if(username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+			return "0"; // Invalid input
+		}
+		
+		// Check credentials
+		Student student = studentService.getStudentByUsername(username.trim());
 		
 		if (student != null){
         	final BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
@@ -103,9 +107,9 @@ public class ApiController {
 			
 			DateRange currentDateRange = null;
 			List<DateRange> dateRanges = dateRangeService.getDateRange();
-			for(int i = 0; i<dateRanges.size(); i++) {
-				if(dateRanges.get(i).getYear() == currentYear) {
-					currentDateRange = dateRanges.get(i);
+			for(DateRange dateRange : dateRanges) {
+				if(dateRange.getYear() == currentYear) {
+					currentDateRange = dateRange;
 					break;
 				}
 			}
@@ -131,6 +135,9 @@ public class ApiController {
 			
 		}
 		catch(Exception e) {
+			// TODO: Implement proper logging framework (SLF4J)
+			// Log the exception details for debugging
+			e.printStackTrace();
 			return "0";
 		}
 		return "1";
@@ -146,9 +153,9 @@ public class ApiController {
 			
 			DateRange currentDateRange = null;
 			List<DateRange> dateRanges = dateRangeService.getDateRange();
-			for(int i = 0; i<dateRanges.size(); i++) {
-				if(dateRanges.get(i).getYear() == currentYear) {
-					currentDateRange = dateRanges.get(i);
+			for(DateRange dateRange : dateRanges) {
+				if(dateRange.getYear() == currentYear) {
+					currentDateRange = dateRange;
 					break;
 				}
 			}
@@ -162,6 +169,9 @@ public class ApiController {
 			
 		}
 		catch(Exception e) {
+			// TODO: Implement proper logging framework (SLF4J)
+			// Log the exception details for debugging
+			e.printStackTrace();
 			return "-1";
 		}
 	}
@@ -169,8 +179,8 @@ public class ApiController {
 	@RequestMapping(value = "/api/generateStudents", method = RequestMethod.GET)
 	public @ResponseBody String generateStudents() throws FileNotFoundException, IOException {
 		
-		if(1==1)
-			return "Students already generated";
+		// Feature disabled - students should be created through proper registration
+		return "Students already generated";
 		
 		String output = "";
 		String[] names = {"Johnnie Dejarnette","Keiko Delawder","Drucilla Nottingham","Julieann Neumann","Madlyn Merlin","Chong Duet","Brooks Sitz","Kathline Shiflet","Devorah Clinkscales","Alba Hinnant","Dante Hynd","Elicia Bennetts","Leandro Fenstermaker","Shea Niblett","Morton Mathers","Lynne Clover","Julie Mcnaught","Jamee Westlake","Tyrone Choice","Barb Averitt","Neva Kreidler","Dwayne Vizcarra","Erna Ludlum","Therese Shellman","Tonette Dunworth","Marlen Mccloskey","Suellen Peltz","Birgit Zamzow","Ta Dube","January Dodrill","Vickey Holdridge","Kaleigh Calandra","Elisa Hohlt","Jo Wilburn","Raisa Vanderzee","Rosann Buras","Richie Wyman","Tish Valois","Yoko Lisk","Neida Nappi","Karine Lombardi","Fonda Pulliam","Marni Alatorre","Brittanie Carstens","Nelson Sabin","Jeanmarie Corella","Erika Spieker","Emelina Lavalle","Elenor Gudino","Angella White"};

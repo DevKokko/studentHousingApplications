@@ -73,40 +73,36 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 	}
 	
 	@Override
-	public List getApplicationsByDep(int dep) {
+	public List<Application> getApplicationsByDep(int dep) {
 
 		//get the current hibernate session
-				Session currentSession = sessionFactory.getCurrentSession();
-				
+		Session currentSession = sessionFactory.getCurrentSession();
 		
-				Query theQuery = currentSession.createQuery("from Application WHERE year=:year");
-				
-				theQuery.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
-				
-				
-				List theApplications = theQuery.getResultList();
-				List<Student> theStudents = studentService.getStudents();
-				
-				List<Application> finalApplications = new ArrayList<Application>();
-				
-				for(int i = 0; i<theApplications.size(); i++) {
-					if((((Student)findStudentById(theStudents,((Application)theApplications.get(i)).getStudent_id())).getDepartment() == dep) || dep == 0){
-						if(((Application)theApplications.get(i)).getGotFreeHousing() == 0)
-							finalApplications.add((Application)theApplications.get(i));
-					}
+		Query<Application> theQuery = currentSession.createQuery("from Application WHERE year=:year", Application.class);
+		
+		theQuery.setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
+		
+		List<Application> theApplications = theQuery.getResultList();
+		List<Student> theStudents = studentService.getStudents();
+		
+		List<Application> finalApplications = new ArrayList<>();
+		
+		for(Application application : theApplications) {
+			Student student = findStudentById(theStudents, application.getStudent_id());
+			if(student != null && (student.getDepartment() == dep || dep == 0)){
+				if(application.getGotFreeHousing() == 0) {
+					finalApplications.add(application);
 				}
-				
-				//execute query and get result list
-				List applications = finalApplications;
-				
-				//return the results
-				return applications;
+			}
+		}
+		
+		return finalApplications;
 	}
 	
 	private Student findStudentById(List<Student> students, int id) {
-		for(int j = 0; j<students.size(); j++) {
-			if(((Student)students.get(j)).getId() == id){
-				return ((Student)students.get(j));
+		for(Student student : students) {
+			if(student.getId() == id){
+				return student;
 			}
 		}
 		return null;
@@ -166,7 +162,7 @@ public class ApplicationDAOImpl implements ApplicationDAO{
 
 	@Override
 	public String fileUrl(String url) {
-		// TODO Auto-generated method stub
+		// TODO: Implement file URL handling for document uploads
 		return null;
 	}
 }
