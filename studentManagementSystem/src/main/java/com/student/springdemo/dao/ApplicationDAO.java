@@ -14,7 +14,7 @@ public interface ApplicationDAO {
 	public Application getApplication(int theId);
 	public void deleteApplication(int theId);
 	public List<Application> getApplications();
-	public List getApplicationsByDep(int dep);
+	public List<Application> getApplicationsByDep(int dep);
 	public int howManyYearsFreeHousing(int theId);
 	public String fileUrl(String url);
 }

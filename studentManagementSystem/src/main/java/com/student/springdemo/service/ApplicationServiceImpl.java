@@ -30,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 	
 	@Override
 	@Transactional
-	public List getApplicationsByDep(int dep){
+	public List<Application> getApplicationsByDep(int dep){
 		return applicationDAO.getApplicationsByDep(dep);
 	}
 
@@ -62,7 +62,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
 	@Override
 	public String fileUrl(String url) {
-		// TODO Auto-generated method stub
+		// TODO: Implement file URL handling for document uploads
 		return null;
 	}
 }
